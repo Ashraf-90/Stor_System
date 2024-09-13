@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Stor_System.Models.Project>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Requests List</h2>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/Projects/Archives" class="card-description" style="color: #b66dff;"><code>Requests Archive</code> </a>
+                </div>
+                <hr />
+
+
+                <div class="accordion" id="accordionPanelsStayOpenExample" style="--bs-accordion-border-color: 0;">
+                    @foreach (var item in Model)
+                    {
+                        <div class="accordion-item">
+                            <div class="row align-items-center mb-2 filter-row" data-status="@item.ApproveStatus" style="width:100%; border-style: solid; border-width:thin; border-radius:5px;padding: 10px; margin-bottom: 15px;">
+                                <div class="col-lg-4">
+                                    <strong style="font-size: 23px;">@item.ProjectName</strong>
+                                    @if (item.InternalExternal == "1")  { <p>Internal</p>  }  else  { <p>External</p>  }
+                                </div>
+                                <div class="col-lg-4">
+                                    <strong>From : </strong> @(item.StartDate?.ToString("dd/MM/yyyy") ?? "N/A")<br>
+                                    <strong>TO : </strong>  @(item.EndDate?.ToString("dd/MM/yyyy") ?? "N/A")
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="row" style="display: flex; align-items: center;">
+                                        <div style="flex: 0 0 auto; width: fit-content; margin-left: auto;">
+                                            <button class="accordion-button collapsed" style="padding: 0px; background: transparent;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-@item.ProjectId" aria-expanded="false" aria-controls="panelsStayOpen-collapse-@item.ProjectId"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="panelsStayOpen-collapse-@item.ProjectId" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-heading-@item.ProjectId">
+                                    <hr>
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-lg-6" style="padding-right: 10%;">
+                                                <strong style="font-size: 25px; text-decoration: underline;">Description :</strong>
+                                                <br>
+                                                @item.ProjectDescription
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <strong style="font-size: 25px; text-decoration: underline;">Equipment :</strong>
+                                                <br>
+                                                <div class="row" style="font-weight:bold;border-bottom-style:solid;">
+                                                    <div style="flex: 0 0 auto;  width: 40%;">Model</div>
+                                                    <div style="flex: 0 0 auto;  width: 40%;">Name</div>
+                                                    <div style="flex: 0 0 auto;  width: 10%;">Q</div>
+                                                </div>
+                                                @foreach (var productModelCount in item.ProductModelCounts)
+                                                {
+                                                    <div class="row" style="border-bottom-style:solid; border-width:thin">
+                                                        <div style="flex: 0 0 auto;  width: 40%;"> @productModelCount.Key.ModelName</div>
+                                                        <div style="flex: 0 0 auto;  width: 40%;">@productModelCount.Key.ProductName </div>
+                                                        <div style="flex: 0 0 auto;  width: 10%;"> @productModelCount.Value</div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

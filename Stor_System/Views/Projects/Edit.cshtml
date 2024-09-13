@@ -1,0 +1,361 @@
+﻿@model Stor_System.Models.Project
+<style>
+    .product-card {
+        /* border: 1px solid #000; */
+        padding: 10px;
+        text-align: center;
+        background-color: white;
+        box-shadow: 0 -4px 11px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px
+    }
+
+        .product-card img {
+            max-width: 100%;
+            height: 77px;
+            width: 109px;
+            /*  float: right; */
+        }
+
+    .product-title {
+        font-weight: bold;
+        margin-top: 10px;
+        height: 46px;
+    }
+
+    .product-details {
+        margin-top: 5px;
+    }
+
+    .F_PH::placeholder {
+        color: #c9c8c8; /* Adjust the placeholder color if needed */
+    }
+
+    .DDL {
+        text-align: center
+    }
+</style>
+<style>
+    .container {
+        display: flex;
+        align-items: center;
+    }
+
+    button {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    input[type="number"] {
+        width: 60px;
+        height: 30px;
+        text-align: center;
+        font-size: 16px;
+        margin: 0 10px;
+    }
+
+    .quantity-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .decrease-btn, .increase-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .basket {
+        position: fixed;
+        bottom: 10%;
+        right: 2%;
+        width: fit-content;
+        text-align: center;
+        padding: 10px;
+        z-index: 1000;
+        border-style: solid;
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #f2edf3;
+    }
+
+</style>
+
+
+
+
+
+
+<form asp-controller="Projects" asp-action="Edit" method="post" id="Form1">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ProjectId" />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8">
+                <h2 style="font-size: 2.188rem;">Edit Request : @Model.ProjectName</h2>
+            </div>
+        </div>
+        <div style="margin-bottom: 25px;">
+            <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+            <a href="/Projects/index" class="card-description" style="color: #b66dff;"><code>Requests</code> </a> /
+            <a href="/Projects/Edit/@Model.ProjectId" class="card-description" style="color: #b66dff;"><code>Edit Request : @Model.ProjectName</code> </a>
+        </div>
+        <div class="row" id="div1">
+            <div class="col-lg-12 stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Project Name</label>
+                                            <input asp-for="ProjectName" class="form-control" id="ProjectName_Input" />
+                                            <span class="text-danger" id="ProjectName_Alert" style="display:none">* Project Name IS Required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Address</label>
+                                            <input asp-for="ProjectLocation" class="form-control" id="ProjectLocation_Input" />
+                                            <span class="text-danger" id="ProjectLocation_Alert" style="display:none">* Address IS Required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Start Date</label>
+                                            <input asp-for="StartDate" class="form-control" type="date" id="StartDate_Input" />
+                                            <span class="text-danger" id="StartDate_Alert" style="display:none">* Start Date IS Required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label">End Date</label>
+                                            <input asp-for="EndDate" class="form-control" type="date" id="EndDate_Input" />
+                                            <span class="text-danger" id="EndDate_Alert" style="display:none">* End Date IS Required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Project Status</label>
+                                            <select asp-for="ProjectStatus" id="projectStatus" class="form-control">
+                                                <option value="1">..... Select Status .....</option>
+                                                <option value="2">On Progress</option>
+                                                <option value="3">Out Of Stor</option>
+                                                <option value="4">Finish</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4" id="outOfStorDiv" style="display: none;">
+                                        <div class="form-group">
+                                            <label class="control-label">Delivered By</label>
+                                            @Html.DropDownList("EmployeeId", null, "...... Select Employee ......", htmlAttributes: new { @class = "form-control", id = "EmployeeId"})
+                                            <span class="text-danger" id="EmployeeId_Alert" style="display:none">* Employee IS Required</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Internal / External</label><br>
+                                            <div class="row" style="border-style: solid; border-width: thin; border-color: #ced4da; width: 100%; margin-left: 0%; padding: 6px; border-radius: 4px;">
+                                                <div class="col-lg-6">
+                                                    <input type="radio" id="Internal" name="InternalExternal" value="1" style="width:15px;height:20px;">
+                                                    <label for="project1">Internal</label>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <input type="radio" id="External" name="InternalExternal" value="2" style="width:15px;height:20px;">
+                                                    <label for="project2">External</label>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="InternalExternalText" asp-for="InternalExternal" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Description</label>
+                                            <textarea asp-for="ProjectDescription" class="form-control" style="height: 195px;"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div style="display:none">
+                            <input asp-for="EmployeeRequesterId" class="form-control" />
+                            <input asp-for="EmployeeDeliverId" class="form-control" id="Emp_Id" />
+                            <input asp-for="ApproveStatus" class="form-control" />
+                            <input asp-for="Active" class="form-control" />
+                        </div>
+
+
+
+
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <div class="form-group">
+                                    <input type="button" value="Save" class="btn btn-primary" id="logProductIds" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="~/js/signalr.js"></script>
+<script src="~/js/notification.js" asp-append-version="true"></script>
+<script src="~/js/signalr.js"></script>
+<script src="~/js/signalr.min.js"></script>
+<script src="~/js/site.js"></script>
+<script src="~/js/userscount.js"></script>
+<script src="~/js/notification.js"></script>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="~/js/project.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#EmployeeId').change(function () {
+            var selectedValue = $(this).val();
+            $('#Emp_Id').val(selectedValue);
+        });
+    });
+
+
+    window.onload = function () {
+        var internalExternalText = document.getElementById("InternalExternalText").value;
+
+        if (internalExternalText === "1") {
+            document.getElementById("Internal").checked = true;
+        } else if (internalExternalText === "2") {
+            document.getElementById("External").checked = true;
+        }
+    };
+
+
+    document.querySelectorAll('input[name="InternalExternal"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById('InternalExternalText').value = this.value;
+            }
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#projectStatus').change(function () {
+            var selectedValue = $(this).val();
+            if (selectedValue == '3') {
+                $('#outOfStorDiv').show();
+            } else {
+                $('#outOfStorDiv').hide();
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model Stor_System.Models.Project
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Project</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProjectId" />
+            
+           
+            
+           
+           
+            
+
+
+
+           
+          
+            
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+ *@

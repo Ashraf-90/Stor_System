@@ -1,0 +1,185 @@
+﻿@model Stor_System.Models.UserAccount
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Edit User Account : @Model.UserName</h2>
+                    </div>
+                    <div class="col-3">
+                        <a href="~/UserAccounts/index" style="float: right;"><i class="fa fa-arrow-left"></i>&nbsp; Back</a>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/UserAccounts/index" class="card-description" style="color: #b66dff;"><code>User Accounts</code> </a> /
+                    <a href="/UserAccounts/Edit/@Model.UserId" class="card-description" style="color: #b66dff;"><code>Edit User Account : @Model.UserName</code> </a>
+                </div>
+                @* ***************************************************************************************************************** *@
+
+
+                <form asp-action="Edit" method="post" id="Form1">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="UserId" />>
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">Employee Name</label>
+                                @Html.DropDownList("EmployeeId", null, "...... Select Employee ......", htmlAttributes: new { @class = "form-control", id = "EmployeeId"})
+                                <span class="text-danger" id="EmployeeId_Alert" style="display:none">* Employee IS Required</span>
+                                <input type="hidden" name="Emp_Id" value="@Model.EmployeeId"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="control-label">Role</label>
+                                @Html.DropDownList("RoleId", null, "...... Select Role ......", htmlAttributes: new { @class = "form-control", id = "RoleId"})
+                                <span class="text-danger" id="RoleId_Alert" style="display:none">* Role IS Required</span>
+                                <input type="hidden" name="Role_Id" value="@Model.RoleId"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">User Name</label>
+                                <input asp-for="UserName" class="form-control" id="UserName_Input" />
+                                <span class="text-danger" id="UserName_Alert" style="display:none">* User Name IS Required</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="Passwod" class="control-label"></label>
+                                <input asp-for="Passwod" class="form-control" id="Passwod_Input" />
+                                <span class="text-danger" id="Passwod_Alert" style="display:none">* User Name IS Required</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label aclass="control-label">Confirm Password</label>
+                                <input class="form-control" id="Confirm_Input" />
+                                <span class="text-danger" id="Confirm_Alert" style="display:none">* Password Does Not Match</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <input type="button" value="Save" onclick="Add_UserAccount() " class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+    //*************************** Add Products  Put The DropDow List Values in Input Text *********************************************
+
+    $(function () { $('#EmployeeId').on('change', function () { $('input[name=Emp_Id]').val($(this).val()); }); });
+    $(function () { $('#RoleId').on('change', function () { $('input[name=Role_Id]').val($(this).val()); }); });
+
+    //******************************************************** Mendetary Method ********************************************************
+
+    document.getElementById('UserName_Input').addEventListener('input', function () { UserName_Alert.style.display = 'none'; });
+    document.getElementById('Passwod_Input').addEventListener('input', function () { Passwod_Alert.style.display = 'none'; });
+    document.getElementById('Confirm_Input').addEventListener('input', function () { Confirm_Alert.style.display = 'none'; });
+
+    $(document).ready(function () { $('#EmployeeId').change(function () { var selectedValue = $(this).val(); if (selectedValue !== "") { EmployeeId_Alert.style.display = 'none'; } }); });
+    $(document).ready(function () { $('#RoleId').change(function () { var selectedValue = $(this).val(); if (selectedValue !== "") { RoleId_Alert.style.display = 'none'; } }); });
+
+
+    function Add_UserAccount() {
+        var UserName_Input = document.getElementById('UserName_Input').value; var UserName_Alert = document.getElementById('UserName_Alert');
+        var Passwod_Input = document.getElementById('Passwod_Input').value; var Passwod_Alert = document.getElementById('Passwod_Alert');
+        var Confirm_Input = document.getElementById('Confirm_Input').value; var Confirm_Alert = document.getElementById('Confirm_Alert');
+
+        var EmployeeId_DropDownList = document.getElementById('EmployeeId');
+        var EmployeeId_DropDownList_txt = EmployeeId_DropDownList.options[EmployeeId_DropDownList.selectedIndex].text;
+        var EmployeeId_Alert = document.getElementById('EmployeeId_Alert');
+
+        var RoleId_DropDownList = document.getElementById('RoleId');
+        var RoleId_DropDownList_txt = RoleId_DropDownList.options[RoleId_DropDownList.selectedIndex].text;
+        var RoleId_Alert = document.getElementById('RoleId_Alert');
+
+        if (UserName_Input !== '' && Passwod_Input !== '' && EmployeeId_DropDownList_txt !== '...... Select Employee ......' && RoleId_DropDownList_txt !== '...... Select Role ......'
+            && Confirm_Input === Passwod_Input) {
+
+            document.forms["Form1"].submit();
+        }
+        else if (Confirm_Input !== Passwod_Input) {
+            Confirm_Alert.style.display = 'block';
+        }
+        else {
+            if (UserName_Input === '') { UserName_Alert.style.display = 'block'; }
+            if (Passwod_Input === '') { Passwod_Alert.style.display = 'block'; }
+            if (EmployeeId_DropDownList_txt === '...... Select Employee ......') { EmployeeId_Alert.style.display = 'block'; }
+            if (RoleId_DropDownList_txt === '...... Select Role ......') { RoleId_Alert.style.display = 'block'; }
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

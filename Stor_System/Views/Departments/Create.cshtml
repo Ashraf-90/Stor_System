@@ -1,0 +1,63 @@
+﻿@model Stor_System.Models.Department
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Add New Department</h2>
+                    </div>
+                    <div class="col-3">
+                        <a href="~/Departments/index" style="float: right;"><i class="fa fa-arrow-left"></i>&nbsp; Back</a>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/Departments/index" class="card-description" style="color: #b66dff;"><code>Departments</code> </a> /
+                    <a href="/Departments/Create" class="card-description" style="color: #b66dff;"><code>Add</code> </a>
+                </div>
+
+
+
+                <div class="col-md-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="control-label">Department Name</label>
+                                    <input asp-for="DepartmentName" class="form-control" />
+                                    <span asp-validation-for="DepartmentName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <input type="submit" value="Add" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

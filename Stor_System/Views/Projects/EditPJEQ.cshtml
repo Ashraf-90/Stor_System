@@ -1,0 +1,354 @@
+﻿@model IEnumerable<Stor_System.Models.ProductsModel>
+
+
+
+<style>
+    .product-card {
+        border: 2px solid;
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px
+    }
+
+        .product-card img {
+            max-width: 100%;
+            height: 77px;
+            width: 109px;
+            /*  float: right; */
+        }
+
+    .product-title {
+        font-weight: bold;
+        margin-top: 10px;
+        height: 46px;
+    }
+
+    .product-details {
+        margin-top: 5px;
+    }
+
+    .F_PH::placeholder {
+        color: #c9c8c8; /* Adjust the placeholder color if needed */
+    }
+
+    .DDL {
+        text-align: center
+    }
+</style>
+<style>
+    .container {
+        display: flex;
+        align-items: center;
+    }
+
+    button {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    input[type="number"] {
+        width: 60px;
+        height: 30px;
+        text-align: center;
+        font-size: 16px;
+        margin: 0 10px;
+    }
+
+    .quantity-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .decrease-btn, .increase-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .basket {
+        position: fixed;
+        bottom: 10%;
+        right: 2%;
+        width: fit-content;
+        text-align: center;
+        padding: 10px;
+        z-index: 1000;
+        border-style: solid;
+        border-radius: 75px;
+        padding: 10px;
+        background-color: #f2edf3;
+        border-color: #5190d5;
+    }
+
+</style>
+
+
+
+
+<div class="container-fluid">
+    <form asp-action="EditPJEQ" asp-controller="Projects" method="post" id="Form1">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="row justify-content-center text-center">
+                    <div class="col-lg-3" style="margin-bottom:15px">
+                        @Html.DropDownList("CategoryId", null, "...... Select Category ......", htmlAttributes: new { @class = "form-control mx-auto DDL", id = "CategoryId"})
+                    </div>
+                    <div class="col-lg-3" style="margin-bottom:15px">
+                        @Html.DropDownList("BrandId", null, "...... Select Brand ......", htmlAttributes: new { @class = "form-control mx-auto DDL" , id = "BrandId"})
+                    </div>
+                    <div class="col-lg-4" style="margin-bottom:15px">
+                        <input type="text" placeholder="Search By Name" class="form-control mx-auto F_PH" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="productContainer">
+            @foreach (var item in Model)
+            {
+                string backgroundColor = item.QStatus > 0 ? "#ffffff" : item.QStatus <= 0 ? "#ffefef" : "#ffefef";
+                string BorderColor = item.QStatus > 0 ? "#2cb12c" : item.QStatus <= 0 ? "#b31c1c" : "#b31c1c";
+
+                <div class="col-lg-3 product-card-container" data-brand="@item.BrandId" data-category="@item.CategoryId" style="margin-bottom: 15px;">
+                    <div class="product-card" id="productcard" style="background-color:@backgroundColor; border-color:@BorderColor">
+                        <div class="row">
+                            <div style="flex: 0 0 25%; max-width: 25%;"></div>
+                            <div style="flex: 0 0 50%; max-width: 50%;">
+                                @if (item.ImagePath == "")
+                                {
+                                    <img src="~/A_Stor_System/assets/images/Icons/Equipments.png" alt="Product Image">
+                                }
+                                else
+                                {
+                                    <img src="~/a_stor_system/assets/images/products/@item.ImagePath" alt="Product Image">
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="product-title"><h3 style="font-size:22px;">@item.ProductName</h3></div>
+                            <div class="product-details">
+                                <div>Quantity: <span>@item.Quantity</span> Units | Available: <span id="available-@item.ProductId">@item.QStatus</span> - @item.ProductId</div>
+                            </div>
+                            <div class="quantity-controls">
+                                <img id="decrease-@item.ProductId" src="~/A_Stor_System/assets/images/Icons/minus.png" alt="Product Image" style="width:25px; height:25px;cursor:pointer">
+                                <input type="number" id="quantity-input-@item.ProductId" value="@item.PJUsered" min="0" max="@item.QStatus" readonly class="form-control" />
+                                <img id="increase-@item.ProductId" src="~/A_Stor_System/assets/images/Icons/plus.png" alt="Product Image" style="width:25px; height:25px;cursor:pointer">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div id="logProductIds" class="basket">
+            <img src="~/a_stor_system/assets/images/icons/send.png" width="40" style="padding:5px" />
+        </div>
+
+
+        <input type="hidden" id="productIds" name="Produts_Id_List" /><br />
+        <input type="hidden" id="quantities" name="Produts_Qu_List" />
+    </form>
+</div>
+
+
+
+@* <script src="~/js/signalr.js"></script>
+<script src="~/js/notification.js" asp-append-version="true"></script>
+<script src="~/js/signalr.js"></script>
+<script src="~/js/signalr.min.js"></script>
+<script src="~/js/site.js"></script>
+<script src="~/js/userscount.js"></script>
+<script src="~/js/notification.js"></script >*@
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
+
+
+<script>
+    // $(document).ready(function () {
+    //     // Handle the click on the minus button
+    //     $('[id^=decrease-]').on('click', function () {
+    //         var productId = $(this).attr('id').split('-')[1];
+    //         var inputField = $('#quantity-input-' + productId);
+    //         var availableField = $('#available-' + productId);
+
+    //         var currentValue = parseInt(inputField.val());
+    //         var availableValue = parseInt(availableField.text());
+
+            
+
+    //         if (currentValue > 0) {
+    //             inputField.val(currentValue - 1);
+    //             availableField.text(availableValue + 1);
+    //         }
+
+            
+    //     });
+
+    //     // Handle the click on the plus button
+    //     $('[id^=increase-]').on('click', function () {
+
+
+
+    //         console.log('1');
+    //         var productId = $(this).attr('id').split('-')[1];
+    //         console.log('2');
+    //         var inputField = $('#quantity-input-' + productId);
+    //         console.log('3');
+    //         var availableField = $('#available-' + productId);
+    //         console.log('4');
+
+    //         var currentValue = parseInt(inputField.val());
+    //         console.log('5');
+    //         var availableValue = parseInt(availableField.text());
+    //         console.log('6');
+    //         var maxValue = parseInt(inputField.attr('max'));
+    //         console.log('7');
+
+                
+
+
+    //         if (availableValue > 0) {
+
+    //             console.log('8');
+    //             inputField.val(currentValue + 1);
+    //             availableField.text(availableValue - 1);
+    //         }
+    //     });
+    // });
+
+    $(document).ready(function () {
+        // Handle the click on the minus button
+        $('[id^=decrease-]').on('click', function () {
+            var productId = $(this).attr('id').split('-')[1];
+            var inputField = $('#quantity-input-' + productId);
+            var availableField = $('#available-' + productId);
+            var productCard = inputField.closest('.product-card');
+
+            var currentValue = parseInt(inputField.val());
+            var availableValue = parseInt(availableField.text());
+
+            if (currentValue > 0) {
+                inputField.val(currentValue - 1);
+                availableField.text(availableValue + 1);
+            }
+
+            if (availableValue + 1 > 0) {
+                productCard.css('background-color', '#ffffff');
+                productCard.css('border-color', '#2cb12c');
+            } else {
+                productCard.css('background-color', '#ffefef');
+                productCard.css('border-color', '#b31c1c');
+            }
+        });
+
+        // Handle the click on the plus button
+        $('[id^=increase-]').on('click', function () {
+            var productId = $(this).attr('id').split('-')[1];
+            var inputField = $('#quantity-input-' + productId);
+            var availableField = $('#available-' + productId);
+            var productCard = inputField.closest('.product-card');
+
+            var currentValue = parseInt(inputField.val());
+            var availableValue = parseInt(availableField.text());
+            var maxValue = parseInt(inputField.attr('max'));
+
+            if (availableValue > 0) {
+                inputField.val(currentValue + 1);
+                availableField.text(availableValue - 1);
+            }
+
+            if (availableValue - 1 > 0) {
+                productCard.css('background-color', '#ffffff');
+                productCard.css('border-color', '#2cb12c');
+            } else {
+                productCard.css('background-color', '#ffefef');
+                productCard.css('border-color', '#b31c1c');
+            }
+        });
+    });
+
+
+
+    // *************************************************** Function to filter products based on selected criteria ************************************************************
+    $(document).ready(function () {
+        // Function to filter products based on selected criteria
+        function filterProducts() {
+            var selectedCategory = $('#CategoryId').val();
+            var selectedBrand = $('#BrandId').val();
+            var selectedInventory = $('#InventoryId').val();
+            var searchName = $('.F_PH').val().toLowerCase();
+
+            console.log(selectedCategory + selectedBrand + selectedInventory)
+
+            $('.product-card-container').each(function () {
+                var productCategory = $(this).data('category');
+                var productBrand = $(this).data('brand');
+                var productInventory = $(this).data('inventory');
+                var productName = $(this).find('.product-title h3').text().toLowerCase();
+
+                var categoryMatch = (selectedCategory === "" || productCategory == selectedCategory);
+                var brandMatch = (selectedBrand === "" || productBrand == selectedBrand);
+                var inventoryMatch = (selectedInventory === "" || productInventory == selectedInventory);
+                var nameMatch = (searchName === "" || productName.includes(searchName));
+
+                if (categoryMatch && brandMatch && inventoryMatch && nameMatch) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        // Event listeners for the dropdowns and search box
+        $('#CategoryId, #BrandId, #InventoryId').change(function () {
+            filterProducts();
+        });
+
+        $('.F_PH').keyup(function () {
+            filterProducts();
+        });
+
+        // Initial filtering on page load
+        filterProducts();
+    });
+
+    // *************************************************** Project Main Function (Equipment collection , Mendetary Method ) ************************************************************
+    document.addEventListener("DOMContentLoaded", () => {
+        const products = document.querySelectorAll(".product-card-container");
+
+        
+
+        document.getElementById("logProductIds").addEventListener("click", () => {
+            const nonZeroProductIds = [];
+            const nonZeroQuantities = [];
+            products.forEach(product => {
+                const productId = product.querySelector("input[type='number']").id.split('-')[2];
+                const quantityInput = document.getElementById(`quantity-input-${productId}`);
+                const quantity = parseInt(quantityInput.value);
+                if (quantity !== 0) {
+                    nonZeroProductIds.push(productId);
+                    nonZeroQuantities.push(quantity);
+                }
+            });
+
+            document.getElementById("productIds").value = nonZeroProductIds;
+            document.getElementById("quantities").value = nonZeroQuantities;
+
+            console.log('One');
+            document.forms["Form1"].submit();
+        });
+    });
+
+
+</script>

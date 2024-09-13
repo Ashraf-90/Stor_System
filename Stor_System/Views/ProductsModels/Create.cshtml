@@ -1,0 +1,482 @@
+﻿@model Stor_System.Models.ProductsModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+    }
+
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Add New Product</h2>
+                    </div>
+                    <div class="col-3">
+                        <a href="~/ProductsModels/index" style="float: right;"><i class="fa fa-arrow-left"></i>&nbsp; Back</a>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/ProductsModels/index" class="card-description" style="color: #b66dff;"><code>Products</code> </a> /
+                    <a href="/ProductsModels/Create" class="card-description" style="color: #b66dff;"><code>Add</code> </a>
+                </div>
+
+                @* ***************************************************************************************************************** *@
+
+                <hr />
+
+
+
+
+                <form asp-action="Create" method="post" enctype="multipart/form-data" id="Form1">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-lg-6" style="border-right-style:solid;border-width: thin;">
+                            <h3 style="margin-bottom: 40px;margin-top: 20px;">Product Details</h3>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Product Name</label>
+                                        <input asp-for="ProductName" class="form-control" id="ProductName_Input" />
+                                        <span class="text-danger" id="ProductName_Alert" style="display:none">* Product Name IS Required</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Model</label>
+                                        <input asp-for="ProductModel" class="form-control" id="ProductModel_Input" />
+                                        <span class="text-danger" id="ProductModel_Alert" style="display:none">* Model IS Required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Category</label>
+                                        @Html.DropDownList("CategoryId", null, "...... Select Category ......", htmlAttributes: new { @class = "form-control", id = "CategoryId"})
+                                        <span asp-validation-for="Category" class="text-danger"></span>
+                                        <input type="hidden" name="Cat_Id" />
+                                        <span class="text-danger" id="CategoryId_Alert" style="display:none">* Category IS Required</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Brand</label>
+                                        @Html.DropDownList("BrandId", null, "...... Select Brand ......", htmlAttributes: new { @class = "form-control" , id = "BrandId"})
+                                        <span asp-validation-for="Brand" class="text-danger"></span>
+                                        <input type="hidden" name="Bra_Id" />
+                                        <span class="text-danger" id="BrandId_Alert" style="display:none">* Brand IS Required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Image</label>
+                                        <input asp-for="ImagePath" type="file" id="imageUpload" class="form-control" />
+                                        <span asp-validation-for="ImagePath" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div id="imageContainer">
+                                        <div style="display: inline-block;width: 85%;">
+                                            <img id="imagePreview" src="~/A_Stor_System/assets/images/Icons/Equipments.png" alt="Image Preview" style="border-color: #ced4da;background-color: #a3a3a3cc; display: inline-block; width: 85%; border-style: solid;  border-radius: 5px;" />
+                                        </div>
+                                        <div style="display: inline-block;">
+                                            <input id="deleteButton" type="button" value="X" style="display:none;border-radius: 8px; background-color: #ff7676; color: white; font-weight: bold;border-color: white;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <h3 style="margin-bottom: 40px;margin-top: 20px;">Add Quantity </h3>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label">BarCode</label>
+                                        <input type="text" placeholder="BarCode" id="BarCode" name="BarCode" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Status</label>
+                                        @Html.DropDownList("SatutsId", null, "...... Select Satuts ......",htmlAttributes: new { @class = "form-control", id = "Status", name = "Status" })
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Inventory</label>
+                                        @Html.DropDownList("InventoryId", null, "...... Select Inventory ......",  htmlAttributes: new { @class = "form-control", id = "InventoryId", name = "Inventorys" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <textarea placeholder="Description" id="Description" name="Description" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label style="font-size: 13px;" for="AddRowButton"><img src="~/A_Stor_System/assets/images/Icons/plus.png" style="width:30px" /></label>
+                                    <input type="button" value="Add Row" id="AddRowButton" style="display:none" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table id="DataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>BarCode</th>
+                                                <th>Status</th>
+                                                <th style="width:15%">Inventory</th>
+                                                <th>Description</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Table body will be dynamically populated here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align:center;margin-top: 20px;">
+                            <div class="form-group">
+                                <input type="button" value="Add" class="btn btn-primary" onclick="Add_Model()" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="NewInventoryDiv" style="display:none;border-style: solid; border-radius: 5px;  width: 70%;  
+                                                margin-inline: auto; background-color: #dfdfeb;position: absolute; 
+                                                top: 40%; left: 15%; height: 40%;padding: 15px;">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <h2>Create New inventory</h2>
+                        </div>
+                        <div class="col-lg-2">
+                            <h2 style="float: inline-end; cursor:pointer" onclick="CloseCreateinventory()">X</h2>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form id="CreateFromCreateModel">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Inventory Name</label>
+                                            <input id="InventoryName" name="InventoryName" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Address</label>
+                                            <input id="InventoryLocation" name="InventoryLocation" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Google Map Link</label>
+                                            <input id="GMapLink" name="GMapLink" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Phone</label>
+                                            <input id="InventoryPhone" name="InventoryPhone" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="row">
+                                    <div class="col-lg-12" >
+                                        <div class="form-group" style="width: fit-content;  margin-inline: auto;">
+                                            <input type="submit" value="Create Inventory" class="btn btn-primary" style="background-color:#9100ff" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="resultMessage"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#CreateFromCreateModel').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            $.ajax({
+                url: '@Url.Action("CreateFromCreateModel", "Inventories")', // Replace with your controller name
+                type: 'POST',
+                data: {
+                    InventoryName: $('#InventoryName').val(),
+                    InventoryLocation: $('#InventoryLocation').val(),
+                    GMapLink: $('#GMapLink').val(),
+                    InventoryPhone: $('#InventoryPhone').val()
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#resultMessage').text(response.message);
+                        $('#CreateFromCreateModel')[0].reset(); // Clear the form
+
+                        // Add the new inventory item to the dropdown
+                        var newOption = $('<option></option>')
+                            .attr('value', response.inventoryId)
+                            .text(response.inventoryName);
+                        $('#inventoryDropdown').append(newOption);
+
+                        // Reload the page
+                        window.location.reload();
+                    } else {
+                        $('#resultMessage').text("Error creating inventory.");
+                    }
+                },
+                error: function () {
+                    $('#resultMessage').text("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* ********************************************* Put The (+) Add New Inventory In the end of inventory DDL ********************************************* *@
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        var dropdown = document.getElementById("InventoryId");
+
+        // Function to move "Damaged" option to the end and style it
+        function moveOptionToEnd(dropdown, optionText) {
+            var options = Array.from(dropdown.options);
+            var damagedOption = null;
+
+            // Find the "Damaged" option and remove it from its current position
+            options.forEach(function (option, index) {
+                if (option.text === optionText) {
+                    damagedOption = option;
+                    dropdown.remove(index);
+                }
+            });
+
+            // If "Damaged" option was found, add it to the end and style it
+            if (damagedOption) {
+                dropdown.add(damagedOption);
+
+                // Apply inline styles to the "Damaged" option
+                damagedOption.style.color = 'blue'; // Text color
+                damagedOption.style.fontWeight = 'bold';
+                damagedOption.style.backgroundColor = '#007bff2e';
+            }
+        }
+
+        // Call the function to move "Damaged" to the end and style it
+        moveOptionToEnd(dropdown, "(+) Add New Inventory");
+    });
+</script>
+
+@* ********************************************* Create The Quantity table ********************************************* *@
+<script>
+
+    document.getElementById('AddRowButton').addEventListener('click', function () {
+        var barcode = document.getElementById('BarCode').value;
+
+
+
+        var status = document.getElementById('Status');
+        var statusID = status.value;
+        var statusText = status.options[status.selectedIndex].text;
+
+
+        var Inventory = document.getElementById('InventoryId');
+        var InventoryID = Inventory.value;
+        var InventoryText = Inventory.options[Inventory.selectedIndex].text;
+
+
+
+        var description = document.getElementById('Description').value;
+
+        if (barcode && statusID && InventoryID) {
+            var table = document.getElementById('DataTable').getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow();
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+
+            cell1.innerHTML = `<input type="hidden" name="Barcodes[]" value="${barcode}"/>${barcode}`;
+            cell2.innerHTML = `<input type="hidden" name="Statuses[]" value="${statusID}"/>${statusText}`;
+            cell3.innerHTML = `<input type="hidden" name="Inventorys[]" value="${InventoryID}"/>${InventoryText}`;
+            cell4.innerHTML = `<input type="hidden" name="Descriptions[]" value="${description}"/>${description}`;
+            cell5.innerHTML = '<button type="button" onclick="deleteRow(this)">Delete</button>';
+
+            document.getElementById('BarCode').value = '';
+            document.getElementById('Description').value = '';
+        } else {
+            alert("Please fill out all fields.");
+        }
+    });
+
+    function deleteRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+
+
+<script>
+    //*************************** Add Products  Display Image When Upload it and Delete it *********************************************
+
+    document.getElementById('imageUpload').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = document.getElementById('imagePreview');
+                img.src = e.target.result;
+                document.getElementById('imageContainer').style.display = 'block';
+                document.getElementById('deleteButton').style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            alert('Please select a valid image file.');
+        }
+    });
+
+    document.getElementById('deleteButton').addEventListener('click', function () {
+
+        const imageUpload = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        const imageContainer = document.getElementById('imageContainer');
+        const deleteButton = document.getElementById('deleteButton');
+
+        imageUpload.value = ''; // Reset the file input
+        imagePreview.src = '/A_Stor_System/assets/images/Icons/Equipments.png'; // Clear the image source
+        deleteButton.style.display = 'none'
+    });
+
+    //*************************** Add Products  Put The DropDow List Values in Input Text *********************************************
+
+    $(function () { $('#CategoryId').on('change', function () { $('input[name=Cat_Id]').val($(this).val()); }); });
+    $(function () { $('#BrandId').on('change', function () { $('input[name=Bra_Id]').val($(this).val()); }); });
+
+    $(function () { $('#InventoryId').on('change', function ()  
+    {
+        console.log('Done');
+
+        if ($(this).val() == 15) 
+        {
+            console.log('Good');
+            document.getElementById('NewInventoryDiv').style.display = 'block';
+            document.getElementById('AddRowButton').disabled = true;
+        }
+        $('input[name=Inv_Id]').val($(this).val());  
+    }); });
+
+
+    function CloseCreateinventory(){
+        document.getElementById('NewInventoryDiv').style.display = 'none';
+        document.getElementById('AddRowButton').disabled = false;
+    }
+
+</script>
+
+
+@* ********************************************* Mendetary Method ********************************************* *@
+<script>
+    document.getElementById('ProductName_Input').addEventListener('input', function () { ProductName_Alert.style.display = 'none'; });
+    document.getElementById('ProductModel_Input').addEventListener('input', function () { ProductModel_Alert.style.display = 'none'; });
+    $(document).ready(function () { $('#CategoryId').change(function () { var selectedValue = $(this).val(); if (selectedValue !== "") { CategoryId_Alert.style.display = 'none'; } }); });
+    $(document).ready(function () { $('#BrandId').change(function () { var selectedValue = $(this).val(); if (selectedValue !== "") { BrandId_Alert.style.display = 'none'; } }); });
+
+
+    function Add_Model(){
+        var ProductName_Input = document.getElementById('ProductName_Input').value; var ProductName_Alert = document.getElementById('ProductName_Alert');
+        var ProductModel_Input = document.getElementById('ProductModel_Input').value; var ProductModel_Alert = document.getElementById('ProductModel_Alert');
+        var CategoryId_DropDownList = document.getElementById('CategoryId');
+        var CategoryId_DropDownList_txt = CategoryId_DropDownList.options[CategoryId_DropDownList.selectedIndex].text;
+        var CategoryId_Alert = document.getElementById('CategoryId_Alert');
+        var BrandId_DropDownList = document.getElementById('BrandId');
+        var BrandId_DropDownList_txt = BrandId_DropDownList.options[BrandId_DropDownList.selectedIndex].text;
+        var BrandId_Alert = document.getElementById('BrandId_Alert');
+
+        if (ProductName_Input !== '' && ProductModel_Input !== '' && CategoryId_DropDownList_txt !== '...... Select Category ......' && BrandId_DropDownList_txt !== '...... Select Brand ......') 
+        {
+            document.forms["Form1"].submit();
+        }
+        else
+        {
+            if (ProductName_Input === '') { ProductName_Alert.style.display = 'block'; }
+            if (ProductModel_Input === '') { ProductModel_Alert.style.display = 'block'; } 
+            if (CategoryId_DropDownList_txt === '...... Select Category ......') { CategoryId_Alert.style.display = 'block'; }
+            if (BrandId_DropDownList_txt === '...... Select Brand ......') { BrandId_Alert.style.display = 'block'; }
+        }
+    }
+</script>

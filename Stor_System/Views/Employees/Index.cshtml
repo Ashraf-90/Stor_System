@@ -1,0 +1,364 @@
+﻿@model IEnumerable<Stor_System.Models.Employee>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string[] Employees_Role_DTL = Accessor.HttpContext.Session.GetString("Employees_Role_DTL").Split(",");
+}
+
+@{
+    var currentDateTime = DateTime.Now;
+}
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        
+        text-align: left;
+        padding: 8px;
+    }
+
+
+
+
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 24%;
+        top: 212px;
+        width: 52%;
+        height: inherit;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        margin-inline: auto;
+    }
+
+    .popup-content {
+        background-color: #fefefe;
+        border: 1px solid #888;
+        width: 95%;
+        height: 95%;
+        margin-inline: auto;
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+</style>
+
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Employees List</h2>
+                    </div>
+                    @{
+                        if (Employees_Role_DTL[1] == " C")
+                        {
+                            <div class="col-3">
+                                <a href="~/Employees/Create" style="float: right;"><i class="fa fa-plus"></i>&nbsp; Add New Employee </a>
+                            </div>
+                            
+                        }
+                    }
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/Employees/index" class="card-description" style="color: #b66dff;"><code>Employees</code> </a>
+                </div>
+
+
+
+
+
+               <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-3" style="margin-bottom:15px">
+                            <div style="border-style: solid; border-radius: 5px; padding: 10px;  border-color: #952c6f;box-shadow: 0 -4px 11px 10px rgba(0, 0, 0, 0.1);">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        @if (item.ImagePath == "")
+                                        {
+                                            <img src="~/a_stor_system/assets/images/icons/emptyusers.png" style=" width: inherit; height:100%;  object-fit: cover;" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/a_stor_system/assets/images/employee/@item.ImagePath" style="width: inherit; height:100%;  object-fit: cover;" />
+                                        }
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div>
+                                            <strong style="color:#952c6f">@item.EmployeeName</strong>
+                                            <p style="margin-bottom: 0px;"><strong>Age : </strong> @item.BirthDay   | <strong>N : </strong> @item.Nationality.NationalityName</p>
+                                            <p style="margin-bottom: 0px;"><strong>Dep :</strong> @item.Department.DepartmentName</p>
+                                            <p style="margin-bottom: 0px;"><strong>Mobile :</strong> @item.Phone</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>  
+                                <div class="row">
+                                    @{
+                                        if (Employees_Role_DTL[3] == " D")
+                                        {
+                                            <div style="flex: 0 0 33.333333%; max-width: 33.333333%; ">
+                                                <a asp-controller="Employees" asp-action="Delete" asp-route-id="@item.EmployeeId"> <img src="~/a_stor_system/assets/images/icons/Gbin.png" style="width:20px;height:20px;float: left;" /></a>
+                                            </div>
+                                        }
+                                       
+                                        <div style="flex: 0 0 33.333333%; max-width: 33.333333%;text-align:center">
+                                            <a onclick="showPopup('@item.EmployeeId' , '@item.EmployeeName' , '@item.Nationality.NationalityName',
+                                                                  '@item.Department.DepartmentName' , '@item.BirthDay' , '@item.Qid' ,
+                                                                  '@item.Address' , '@item.Phone' ,  '@item.Email' , '@item.ImagePath')">
+
+                                                <img src="~/a_stor_system/assets/images/icons/Geye.png" style="width:20px;height:20px;" />
+                                            </a>
+                                        </div>
+
+                                        
+                                        if (Employees_Role_DTL[2] == " E")
+                                        {
+                                            <div style="flex: 0 0 33.333333%; max-width: 33.333333%;">
+                                                <a asp-controller="Employees" asp-action="Edit" asp-route-id="@item.EmployeeId"> <img src="~/a_stor_system/assets/images/icons/GEdit.png" style="width:20px;height:20px;float: right;" /></a>
+                                            </div>
+                                        }
+                                    }
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                    }
+               </div>
+
+                <div id="popupDiv" class="popup">
+                    <div class="popup-content">
+                        <span class="close">&times;</span>
+
+                        <div class="container-fluid">
+                            <div class="row" style="margin-top: 20px; margin-bottom:20px;">
+                                <div class="col-lg-5">
+                                    <div class="row" style=" border-radius:5px;   background-color: #1c8dcf;  padding: 25px;text-align: center;">
+                                        <div class="col-lg-12" style="height: fit-content;margin-inline: auto;">
+                                            <img src="" id="popupContent_IMG" style="width:50%; border-radius:5%" />
+                                        </div>
+                                        <p id="popupContent_Name" style="font-size: 30px;  font-weight: bold; color: white; margin-bottom: -8px;"></p>
+                                        <P id="popupContent_Department" style="font-size: 20px;color: white;"></P>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" style="border-style:solid; border-radius:5px; padding:10px; margin-left:5px;">
+
+                                    <table>
+                                        <tr>
+                                            <td style="width:5%"><strong style="color: #1c8dcf;">Nationality</strong></td>
+                                            <td>:</td>
+                                            <td><strong id="popupContent_Nationality"></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:5%"><strong style="color: #1c8dcf;">Age</strong></td>
+                                            <td>:</td>
+                                            <td><strong id="popupContent_BirthDay"></strong></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="width:5%"><strong style="color: #1c8dcf;">Email</strong></td>
+                                            <td>:</td>
+                                            <td><strong id="popupContent_Email"></strong></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="width:5%"><strong style="color: #1c8dcf;">Phone</strong></td>
+                                            <td>:</td>
+                                            <td><strong id="popupContent_Phone"></strong></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="width:5%"><strong style="color: #1c8dcf;">Q Id</strong></td>
+                                            <td>:</td>
+                                            <td><strong id="popupContent_Qid"></strong></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="width:5%"><strong style="color: #1c8dcf;">Address</strong></td>
+                                            <td>:</td>
+                                            <td><strong id="popupContent_Address"></strong></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script>
+        var popup = document.getElementById("popupDiv");
+        var span = document.getElementsByClassName("close")[0];
+        function showPopup(employeeId, employeeName, nationalityName ,departmentName ,birthDay ,qid ,address ,phone ,email , imagePath ) 
+        {
+            document.getElementById("popupContent_Nationality").innerText = nationalityName; 
+            document.getElementById("popupContent_Department").innerText = departmentName; 
+            document.getElementById("popupContent_Name").innerText = employeeName; 
+            document.getElementById("popupContent_BirthDay").innerText = birthDay+" Years"; 
+            document.getElementById("popupContent_Qid").innerText = qid; 
+            document.getElementById("popupContent_Address").innerText = address;
+            document.getElementById("popupContent_Phone").innerText = phone; 
+            document.getElementById("popupContent_Email").innerText = email; 
+            document.getElementById("popupContent_IMG").src = '/a_stor_system/assets/images/employee/' + imagePath; 
+
+            popup.style.display = "block"; 
+        }
+        span.onclick = function () {
+            popup.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == popup) {
+                popup.style.display = "none";
+            }
+        }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* <h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Qid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nationality)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImagePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.DepartmentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nationality.NationalityId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.EmployeeId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EmployeeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table> *@

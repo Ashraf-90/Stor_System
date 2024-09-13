@@ -1,0 +1,722 @@
+﻿@model Stor_System.Models.Role
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<style>
+    .Menu {
+        padding: 20px;
+    }
+
+    .Menu_Div {
+        border-style: solid;
+        border-width: thin;
+        border-radius: 7px;
+        padding-inline: 40px;
+        padding-top: 15px;
+    }
+
+    .Menu_Titel {
+        text-align: center;
+        text-decoration: underline;
+    }
+
+    .checkbox-label-text {
+        font-size: 19px;
+        font-weight: bold;
+        text-decoration: underline;
+        text-align: center;
+    }
+
+    .submenu-checkbox {
+        width: 20px;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Add New Role</h2>
+                    </div>
+                    <div class="col-3">
+                        <a href="~/Roles/index" style="float: right;"><i class="fa fa-arrow-left"></i>&nbsp; Back</a>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/Roles/index" class="card-description" style="color: #b66dff;"><code>Roles</code> </a> /
+                    <a href="/Roles/Create" class="card-description" style="color: #b66dff;"><code>Add</code> </a>
+                </div>
+
+
+
+                <div class="col-md-8">
+                    <form asp-action="Create" id="Form1">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label">Role Name</label>
+                                    <input asp-for="RoleName" class="form-control" />
+                                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-5 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Products" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Products</span>
+                                            </label>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-4" style="flex: 0 0 33.333333%;max-width: 33.333333%;">
+                                                    <label><input id="CK_Products_List" type="checkbox" class="submenu-checkbox">List</label>
+                                                </div>
+                                                <div class="col-lg-5" style="flex: 0 0 41.666667%; max-width: 41.666667%;">
+                                                    <label><input id="CK_Products_Archive" type="checkbox" class="submenu-checkbox">Archive</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-4 " style="flex: 0 0 33.333333%;max-width: 33.333333%;">
+                                                    <label><input id="CK_Products_Create" type="checkbox" class="submenu-checkbox" data-symbol="A" data-position="0">Create</label>
+                                                </div>
+                                                <div class="col-lg-4 " style="flex: 0 0 33.333333%;max-width: 33.333333%;">
+                                                    <label><input id="CK_Products_Edit" type="checkbox" class="submenu-checkbox" data-symbol="A" data-position="0">Edit</label>
+                                                </div>
+                                                <div class="col-lg-4 " style="flex: 0 0 33.333333%;max-width: 33.333333%;">
+                                                    <label><input id="CK_Products_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Requests" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Requests</span>
+                                            </label>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-4 " style="flex: 0 0 33.333333%;;max-width: 33.333333%;;">
+                                                    <label><input id="CK_Requests_List" type="checkbox" class="submenu-checkbox">List</label>
+                                                </div>
+                                                <div class="col-lg-4 " style="flex: 0 0 33.333333%;; max-width: 33.333333%;;">
+                                                    <label><input id="CK_Requests_Decision" type="checkbox" class="submenu-checkbox">Admin Decision</label>
+                                                </div>
+                                                <div class="col-lg-4 " style="flex: 0 0 33.33333%; max-width: 33.333333%;;">
+                                                    <label><input id="CK_Requests_Archive" type="checkbox" class="submenu-checkbox">Archive</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-4 " style="flex: 0 0 33.333333%;max-width: 33.333333%;">
+                                                    <label><input id="CK_Requests_Create" type="checkbox" class="submenu-checkbox">Create</label>
+                                                </div>
+                                                <div class="col-lg-4 " style="flex: 0 0 33.333333%;max-width: 33.333333%;">
+                                                    <label><input id="CK_Requests_Edit" type="checkbox" class="submenu-checkbox">Edit</label>
+                                                </div>
+                                                <div class="col-lg-4 " style="flex: 0 0 33.333333%;max-width: 33.333333%;">
+                                                    <label><input id="CK_Requests_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-lg-3 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Categories" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Categories</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Categories_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Categories_Create" type="checkbox" class="submenu-checkbox" data-symbol="A" data-position="0">Create</label>
+                                            <br>
+                                            <label><input id="CK_Categories_Edit" type="checkbox" class="submenu-checkbox" data-symbol="A" data-position="0">Edit</label>
+                                            <label style="float: right;"><input id="CK_Categories_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Barnds" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Barnds</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Barnds_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Barnds_Create" type="checkbox" class="submenu-checkbox" data-symbol="A" data-position="0">Create</label>
+                                            <br>
+                                            <label><input id="CK_Barnds_Edit" type="checkbox" class="submenu-checkbox" data-symbol="A" data-position="0">Edit</label>
+                                            <label style="float: right;"><input id="CK_Barnds_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Inventory" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Inventory</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Inventory_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Inventory_Create" type="checkbox" class="submenu-checkbox">Create</label>
+                                            <br>
+                                            <label><input id="CK_Inventory_Edit" type="checkbox" class="submenu-checkbox">Edit</label>
+                                            <label style="float: right;"><input id="CK_Inventory_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Statuses" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Statuses</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Statuses_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Statuses_Create" type="checkbox" class="submenu-checkbox">Create</label>
+                                            <br>
+                                            <label><input id="CK_Statuses_Edit" type="checkbox" class="submenu-checkbox">Edit</label>
+                                            <label style="float: right;"><input id="CK_Statuses_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <hr>
+
+
+                                <div class="row">
+                                    <div class="col-lg-4 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Employees" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Employees</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Employees_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Employees_Create" type="checkbox" class="submenu-checkbox" data-symbol="A" data-position="0">Create</label>
+                                            <br>
+                                            <label><input id="CK_Employees_Edit" type="checkbox" class="submenu-checkbox" data-symbol="A" data-position="0">Edit</label>
+                                            <label style="float: right;"><input id="CK_Employees_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Departments" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Departments</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Departments_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Departments_Create" type="checkbox" class="submenu-checkbox">Create</label>
+                                            <br>
+                                            <label><input id="CK_Departments_Edit" type="checkbox" class="submenu-checkbox">Edit</label>
+                                            <label style="float: right;"><input id="CK_Departments_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-3 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Nationalities" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Nationalities</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Nationalities_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Nationalities_Create" type="checkbox" class="submenu-checkbox">Create</label>
+                                            <br>
+                                            <label><input id="CK_Nationalities_Edit" type="checkbox" class="submenu-checkbox">Edit</label>
+                                            <label style="float: right;"><input id="CK_Nationalities_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-3 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Users_Accounts" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text"> Users_Accounts</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Users_Accounts_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Users_Accounts_Create" type="checkbox" class="submenu-checkbox">Create</label>
+                                            <br>
+                                            <label><input id="CK_Users_Accounts_Edit" type="checkbox" class="submenu-checkbox">Edit</label>
+                                            <label style="float: right;"><input id="CK_Users_Accounts_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-3 Menu">
+                                        <div class="Menu_Div">
+                                            <label>
+                                                <input id="CK_Roles" type="checkbox" class="submenu-checkbox">
+                                                <span class="checkbox-label-text">Roles</span>
+                                            </label>
+                                            <br>
+                                            <label><input id="CK_Roles_List" type="checkbox" class="submenu-checkbox">List</label>
+                                            <label style="float: right;"><input id="CK_Roles_Create" type="checkbox" class="submenu-checkbox">Create</label>
+                                            <br>
+                                            <label><input id="CK_Roles_Edit" type="checkbox" class="submenu-checkbox">Edit</label>
+                                            <label style="float: right;"><input id="CK_Roles_Delete" type="checkbox" class="submenu-checkbox">Delete</label>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div style="display: none;">
+                                        <input type="text" id="Txt_Products" asp-for="Products" value="L, C, E, D, 0" />
+                                        <input type="text" id="Txt_Requests" asp-for="Requests" value="0, 0, 0, 0, 0, 0" />
+                                       <input type="text" id="Txt_Employees" asp-for="Employees" value="0, 0, 0, 0" />
+                                        <input type="text" id="Txt_Categories" asp-for="Categories" value="0, 0, 0, 0" />
+                                        <input type="text" id="Txt_Barnds" asp-for="Barnds" value="0, 0, 0, 0" />
+                                       <input type="text" id="Txt_Inventory" asp-for="Inventory" value="0, 0, 0, 0" />
+                                       <input type="text" id="Txt_Statuses" asp-for="Statuses" value="0, 0, 0, 0" />
+                                        <input type="text" id="Txt_Departments" asp-for="Departments" value="0, 0, 0, 0" />
+                                       <input type="text" id="Txt_Nationalities" asp-for="Nationalities" value="0, 0, 0, 0" />
+                                       <input type="text" id="Txt_Users_Accounts" asp-for="Users_Accounts" value="0, 0, 0, 0" />
+                                       <input type="text" id="Txt_Roles" asp-for="Roles" value="0, 0, 0, 0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <input type="button" value="Add" onclick="Result()" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function Result() {
+        var CK_Products = document.getElementById('CK_Products');
+        var CK_Products_List = document.getElementById('CK_Products_List');
+        var CK_Products_Archive = document.getElementById('CK_Products_Archive');
+        var CK_Products_Create = document.getElementById('CK_Products_Create');
+        var CK_Products_Edit = document.getElementById('CK_Products_Edit');
+        var CK_Products_Delete = document.getElementById('CK_Products_Delete');
+        var Txt_Products = document.getElementById('Txt_Products');
+        let Products_Array = ['0', '0', '0', '0', '0'];
+        //-------------------------------------------------------
+        var CK_Requests = document.getElementById('CK_Requests');
+        var CK_Requests_List = document.getElementById('CK_Requests_List');
+        var CK_Requests_Decision = document.getElementById('CK_Requests_Decision');
+        var CK_Requests_Archive = document.getElementById('CK_Requests_Archive');
+        var CK_Requests_Create = document.getElementById('CK_Requests_Create');
+        var CK_Requests_Edit = document.getElementById('CK_Requests_Edit');
+        var CK_Requests_Delete = document.getElementById('CK_Requests_Delete');
+        var Txt_Requests = document.getElementById('Txt_Requests');
+        let Requests_Array = ['0', '0', '0', '0', '0', '0'];
+        //-------------------------------------------------------
+        var CK_Employees = document.getElementById('CK_Employees');
+        var CK_Employees_List = document.getElementById('CK_Employees_List');
+        var CK_Employees_Create = document.getElementById('CK_Employees_Create');
+        var CK_Employees_Edit = document.getElementById('CK_Employees_Edit');
+        var CK_Employees_Delete = document.getElementById('CK_Employees_Delete');
+        var Txt_Employees = document.getElementById('Txt_Employees');
+        let Employees_Array = ['0', '0', '0', '0'];
+
+        //-------------------------------------------------------
+        var CK_Categories = document.getElementById('CK_Categories');
+        var CK_Categories_List = document.getElementById('CK_Categories_List');
+        var CK_Categories_Create = document.getElementById('CK_Categories_Create');
+        var CK_Categories_Edit = document.getElementById('CK_Categories_Edit');
+        var CK_Categories_Delete = document.getElementById('CK_Categories_Delete');
+        var Txt_Categories = document.getElementById('Txt_Categories');
+        let Categories_Array = ['0', '0', '0', '0'];
+
+        //-------------------------------------------------------
+        var CK_Barnds = document.getElementById('CK_Barnds');
+        var CK_Barnds_List = document.getElementById('CK_Barnds_List');
+        var CK_Barnds_Create = document.getElementById('CK_Barnds_Create');
+        var CK_Barnds_Edit = document.getElementById('CK_Barnds_Edit');
+        var CK_Barnds_Delete = document.getElementById('CK_Barnds_Delete');
+        var Txt_Barnds = document.getElementById('Txt_Barnds');
+        let Barnds_Array = ['0', '0', '0', '0'];
+
+        //-------------------------------------------------------
+        var CK_Inventory = document.getElementById('CK_Inventory');
+        var CK_Inventory_List = document.getElementById('CK_Inventory_List');
+        var CK_Inventory_Create = document.getElementById('CK_Inventory_Create');
+        var CK_Inventory_Edit = document.getElementById('CK_Inventory_Edit');
+        var CK_Inventory_Delete = document.getElementById('CK_Inventory_Delete');
+        var Txt_Inventory = document.getElementById('Txt_Inventory');
+        let Inventory_Array = ['0', '0', '0', '0'];
+
+        //-------------------------------------------------------
+        var CK_Statuses = document.getElementById('CK_Statuses');
+        var CK_Statuses_List = document.getElementById('CK_Statuses_List');
+        var CK_Statuses_Create = document.getElementById('CK_Statuses_Create');
+        var CK_Statuses_Edit = document.getElementById('CK_Statuses_Edit');
+        var CK_Statuses_Delete = document.getElementById('CK_Statuses_Delete');
+        var Txt_Statuses = document.getElementById('Txt_Statuses');
+        let Statuses_Array = ['0', '0', '0', '0'];
+
+        //-------------------------------------------------------
+        var CK_Departments = document.getElementById('CK_Departments');
+        var CK_Departments_List = document.getElementById('CK_Departments_List');
+        var CK_Departments_Create = document.getElementById('CK_Departments_Create');
+        var CK_Departments_Edit = document.getElementById('CK_Departments_Edit');
+        var CK_Departments_Delete = document.getElementById('CK_Departments_Delete');
+        var Txt_Departments = document.getElementById('Txt_Departments');
+        let Departments_Array = ['0', '0', '0', '0'];
+
+        //-------------------------------------------------------
+        var CK_Nationalities = document.getElementById('CK_Nationalities');
+        var CK_Nationalities_List = document.getElementById('CK_Nationalities_List');
+        var CK_Nationalities_Create = document.getElementById('CK_Nationalities_Create');
+        var CK_Nationalities_Edit = document.getElementById('CK_Nationalities_Edit');
+        var CK_Nationalities_Delete = document.getElementById('CK_Nationalities_Delete');
+        var Txt_Nationalities = document.getElementById('Txt_Nationalities');
+        let Nationalities_Array = ['0', '0', '0', '0'];
+
+        //-------------------------------------------------------
+        var CK_Users_Accounts = document.getElementById('CK_Users_Accounts');
+        var CK_Users_Accounts_List = document.getElementById('CK_Users_Accounts_List');
+        var CK_Users_Accounts_Create = document.getElementById('CK_Users_Accounts_Create');
+        var CK_Users_Accounts_Edit = document.getElementById('CK_Users_Accounts_Edit');
+        var CK_Users_Accounts_Delete = document.getElementById('CK_Users_Accounts_Delete');
+        var Txt_Users_Accounts = document.getElementById('Txt_Users_Accounts');
+        let Users_Accounts_Array = ['0', '0', '0', '0'];
+
+        //-------------------------------------------------------
+        var CK_Roles = document.getElementById('CK_Roles');
+        var CK_Roles_List = document.getElementById('CK_Roles_List');
+        var CK_Roles_Create = document.getElementById('CK_Roles_Create');
+        var CK_Roles_Edit = document.getElementById('CK_Roles_Edit');
+        var CK_Roles_Delete = document.getElementById('CK_Roles_Delete');
+        var Txt_Roles = document.getElementById('Txt_Roles');
+        let Roles_Array = ['0', '0', '0', '0'];
+
+
+
+
+
+
+
+
+
+
+        //***********************************************************************
+        //***********************************************************************
+        if (CK_Products_List.checked === true) { Products_Array[0] = 'L'; }
+        if (CK_Products_Create.checked === true) { Products_Array[1] = 'C'; }
+        if (CK_Products_Edit.checked === true) { Products_Array[2] = 'E'; }
+        if (CK_Products_Delete.checked === true) { Products_Array[3] = 'D'; }
+        if (CK_Products_Archive.checked === true) { Products_Array[4] = 'A'; }
+        Txt_Products.value = Products_Array.join(', ');
+
+        if (CK_Requests_List.checked === true) { Requests_Array[0] = 'L'; }
+        if (CK_Requests_Create.checked === true) { Requests_Array[1] = 'C'; }
+        if (CK_Requests_Edit.checked === true) { Requests_Array[2] = 'E'; }
+        if (CK_Requests_Delete.checked === true) { Requests_Array[3] = 'D'; }
+        if (CK_Requests_Archive.checked === true) { Requests_Array[4] = 'A'; }
+        if (CK_Requests_Decision.checked === true) { Requests_Array[5] = 'DI'; }
+        Txt_Requests.value = Requests_Array.join(', ');
+
+        if (CK_Employees_List.checked === true) { Employees_Array[0] = 'L'; }
+        if (CK_Employees_Create.checked === true) { Employees_Array[1] = 'C'; }
+        if (CK_Employees_Edit.checked === true) { Employees_Array[2] = 'E'; }
+        if (CK_Employees_Delete.checked === true) { Employees_Array[3] = 'D'; }
+        Txt_Employees.value = Employees_Array.join(', ');
+
+        if (CK_Categories_List.checked === true) { Categories_Array[0] = 'L'; }
+        if (CK_Categories_Create.checked === true) { Categories_Array[1] = 'C'; }
+        if (CK_Categories_Edit.checked === true) { Categories_Array[2] = 'E'; }
+        if (CK_Categories_Delete.checked === true) { Categories_Array[3] = 'D'; }
+        Txt_Categories.value = Categories_Array.join(', ');
+
+        if (CK_Barnds_List.checked === true) { Barnds_Array[0] = 'L'; }
+        if (CK_Barnds_Create.checked === true) { Barnds_Array[1] = 'C'; }
+        if (CK_Barnds_Edit.checked === true) { Barnds_Array[2] = 'E'; }
+        if (CK_Barnds_Delete.checked === true) { Barnds_Array[3] = 'D'; }
+        Txt_Barnds.value = Barnds_Array.join(', ');
+
+        if (CK_Inventory_List.checked === true) { Inventory_Array[0] = 'L'; }
+        if (CK_Inventory_Create.checked === true) { Inventory_Array[1] = 'C'; }
+        if (CK_Inventory_Edit.checked === true) { Inventory_Array[2] = 'E'; }
+        if (CK_Inventory_Delete.checked === true) { Inventory_Array[3] = 'D'; }
+        Txt_Inventory.value = Inventory_Array.join(', ');
+
+        if (CK_Statuses_List.checked === true) { Statuses_Array[0] = 'L'; }
+        if (CK_Statuses_Create.checked === true) { Statuses_Array[1] = 'C'; }
+        if (CK_Statuses_Edit.checked === true) { Statuses_Array[2] = 'E'; }
+        if (CK_Statuses_Delete.checked === true) { Statuses_Array[3] = 'D'; }
+        Txt_Statuses.value = Statuses_Array.join(', ');
+
+        if (CK_Departments_List.checked === true) { Departments_Array[0] = 'L'; }
+        if (CK_Departments_Create.checked === true) { Departments_Array[1] = 'C'; }
+        if (CK_Departments_Edit.checked === true) { Departments_Array[2] = 'E'; }
+        if (CK_Departments_Delete.checked === true) { Departments_Array[3] = 'D'; }
+        Txt_Departments.value = Departments_Array.join(', ');
+
+        if (CK_Nationalities_List.checked === true) { Nationalities_Array[0] = 'L'; }
+        if (CK_Nationalities_Create.checked === true) { Nationalities_Array[1] = 'C'; }
+        if (CK_Nationalities_Edit.checked === true) { Nationalities_Array[2] = 'E'; }
+        if (CK_Nationalities_Delete.checked === true) { Nationalities_Array[3] = 'D'; }
+        Txt_Nationalities.value = Nationalities_Array.join(', ');
+
+        if (CK_Users_Accounts_List.checked === true) { Users_Accounts_Array[0] = 'L'; }
+        if (CK_Users_Accounts_Create.checked === true) { Users_Accounts_Array[1] = 'C'; }
+        if (CK_Users_Accounts_Edit.checked === true) { Users_Accounts_Array[2] = 'E'; }
+        if (CK_Users_Accounts_Delete.checked === true) { Users_Accounts_Array[3] = 'D'; }
+        Txt_Users_Accounts.value = Users_Accounts_Array.join(', ');
+
+        if (CK_Roles_List.checked === true) { Roles_Array[0] = 'L'; }
+        if (CK_Roles_Create.checked === true) { Roles_Array[1] = 'C'; }
+        if (CK_Roles_Edit.checked === true) { Roles_Array[2] = 'E'; }
+        if (CK_Roles_Delete.checked === true) { Roles_Array[3] = 'D'; }
+        Txt_Roles.value = Roles_Array.join(', ');
+
+       document.forms["Form1"].submit();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    CK_Products.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Products_List.checked = true;
+            CK_Products_Archive.checked = true;
+            CK_Products_Create.checked = true;
+            CK_Products_Edit.checked = true;
+            CK_Products_Delete.checked = true;
+        }
+        else {
+            CK_Products_List.checked = false;
+            CK_Products_Archive.checked = false;
+            CK_Products_Create.checked = false;
+            CK_Products_Edit.checked = false;
+            CK_Products_Delete.checked = false;
+            Txt_Products.value = '0, 0, 0, 0, 0';
+        }
+
+    });
+
+    console.log('1');
+
+    CK_Requests.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Requests_List.checked = true;
+            CK_Requests_Archive.checked = true;
+            CK_Requests_Create.checked = true;
+            CK_Requests_Edit.checked = true;
+            CK_Requests_Delete.checked = true;
+            CK_Requests_Decision.checked = true;
+        }
+        else {
+            CK_Requests_List.checked = false;
+            CK_Requests_Archive.checked = false;
+            CK_Requests_Create.checked = false;
+            CK_Requests_Edit.checked = false;
+            CK_Requests_Delete.checked = false;
+            CK_Requests_Decision.checked = false;
+            Txt_Requests.value = '0, 0, 0, 0, 0, 0';
+        }
+
+    });
+
+    console.log('2');
+
+    CK_Employees.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Employees_List.checked = true;
+            CK_Employees_Create.checked = true;
+            CK_Employees_Edit.checked = true;
+            CK_Employees_Delete.checked = true;
+        }
+        else {
+            CK_Employees_List.checked = false;
+            CK_Employees_Create.checked = false;
+            CK_Employees_Edit.checked = false;
+            CK_Employees_Delete.checked = false;
+            Txt_Employees.value = '0, 0, 0, 0';
+        }
+    });
+
+    console.log('3');
+
+    CK_Categories.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Categories_List.checked = true;
+            CK_Categories_Create.checked = true;
+            CK_Categories_Edit.checked = true;
+            CK_Categories_Delete.checked = true;
+        }
+        else {
+            CK_Categories_List.checked = false;
+            CK_Categories_Create.checked = false;
+            CK_Categories_Edit.checked = false;
+            CK_Categories_Delete.checked = false;
+            Txt_Categories.value = '0, 0, 0, 0';
+        }
+    });
+
+    console.log('4');
+
+
+
+    CK_Barnds.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Barnds_List.checked = true;
+            CK_Barnds_Create.checked = true;
+            CK_Barnds_Edit.checked = true;
+            CK_Barnds_Delete.checked = true;
+        }
+        else {
+            CK_Barnds_List.checked = false;
+            CK_Barnds_Create.checked = false;
+            CK_Barnds_Edit.checked = false;
+            CK_Barnds_Delete.checked = false;
+            Txt_Barnds.value = '0, 0, 0, 0';
+        }
+    });
+
+    CK_Inventory.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Inventory_List.checked = true;
+            CK_Inventory_Create.checked = true;
+            CK_Inventory_Edit.checked = true;
+            CK_Inventory_Delete.checked = true;
+        }
+        else {
+            CK_Inventory_List.checked = false;
+            CK_Inventory_Create.checked = false;
+            CK_Inventory_Edit.checked = false;
+            CK_Inventory_Delete.checked = false;
+            Txt_Inventory.value = '0, 0, 0, 0';
+        }
+    });
+
+    CK_Statuses.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Statuses_List.checked = true;
+            CK_Statuses_Create.checked = true;
+            CK_Statuses_Edit.checked = true;
+            CK_Statuses_Delete.checked = true;
+        }
+        else {
+            CK_Statuses_List.checked = false;
+            CK_Statuses_Create.checked = false;
+            CK_Statuses_Edit.checked = false;
+            CK_Statuses_Delete.checked = false;
+            Txt_Statuses.value = '0, 0, 0, 0';
+        }
+    });
+
+    CK_Departments.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Departments_List.checked = true;
+            CK_Departments_Create.checked = true;
+            CK_Departments_Edit.checked = true;
+            CK_Departments_Delete.checked = true;
+        }
+        else {
+            CK_Departments_List.checked = false;
+            CK_Departments_Create.checked = false;
+            CK_Departments_Edit.checked = false;
+            CK_Departments_Delete.checked = false;
+            Txt_Departments.value = '0, 0, 0, 0';
+        }
+    });
+
+    CK_Nationalities.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Nationalities_List.checked = true;
+            CK_Nationalities_Create.checked = true;
+            CK_Nationalities_Edit.checked = true;
+            CK_Nationalities_Delete.checked = true;
+        }
+        else {
+            CK_Nationalities_List.checked = false;
+            CK_Nationalities_Create.checked = false;
+            CK_Nationalities_Edit.checked = false;
+            CK_Nationalities_Delete.checked = false;
+            Txt_Nationalities.value = '0, 0, 0, 0';
+        }
+    });
+
+
+    CK_Users_Accounts.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Users_Accounts_List.checked = true;
+            CK_Users_Accounts_Create.checked = true;
+            CK_Users_Accounts_Edit.checked = true;
+            CK_Users_Accounts_Delete.checked = true;
+        }
+        else {
+            CK_Users_Accounts_List.checked = false;
+            CK_Users_Accounts_Create.checked = false;
+            CK_Users_Accounts_Edit.checked = false;
+            CK_Users_Accounts_Delete.checked = false;
+            Txt_Users_Accounts.value = '0, 0, 0, 0';
+        }
+    });
+
+    CK_Roles.addEventListener('change', function () {
+        if (this.checked) {
+            CK_Roles_List.checked = true;
+            CK_Roles_Create.checked = true;
+            CK_Roles_Edit.checked = true;
+            CK_Roles_Delete.checked = true;
+        }
+        else {
+            CK_Roles_List.checked = false;
+            CK_Roles_Create.checked = false;
+            CK_Roles_Edit.checked = false;
+            CK_Roles_Delete.checked = false;
+            Txt_Roles.value = '0, 0, 0, 0';
+        }
+    });
+</script>
+
+
+
+
+

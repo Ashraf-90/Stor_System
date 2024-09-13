@@ -1,0 +1,56 @@
+﻿@model Stor_System.Models.Brand
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Delete Brand: @Model.BrandName</h2>
+                    </div>
+                    <div class="col-3">
+                        <a href="~/Brands/index" style="float: right;"><i class="fa fa-arrow-left"></i>&nbsp; Back</a>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/Brands/index" class="card-description" style="color: #b66dff;"><code>Brands</code> </a> /
+                    <a href="/Brands/Delete/@Model.BrandId" class="card-description" style="color: #b66dff;"><code>Delete Brand: @Model.BrandName</code> </a>
+                </div>
+
+                <h1> </h1>
+
+
+                <div class="row g-4">
+                    <div class="col-sm-12 col-xl-10" style="margin-right: auto; margin-left: auto; text-align:center">
+                        <div class="rounded h-100 p-4" style="border-style:solid">
+                            <div class="row inputfieldRow">
+                                <img src="~/a_stor_system/assets/images/icons/warning.png" style="width: 240px;margin-right: auto;margin-left: auto;" />
+                                <h3>Are You Sure You Want To Delete The Brand</h3>
+                                <h2>@Html.DisplayFor(model => model.BrandName)</h2>
+
+
+                                <form asp-action="Delete" style="margin-top:35px">
+                                    <input type="hidden" asp-for="BrandId" />
+                                    <input type="submit" value="Delete" class="btn btn-danger" /> |
+                                    <a asp-action="index"> <input type="button" value="No" class="btn btn-secondary" style="background-color: green; width: 77px;" /></a>
+                                </form>
+
+                                <h3>This Brand Cannot Be Deleted Decause it contains ( @ViewBag.ProductModelCount ) Models.</h3>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,160 @@
+﻿@model Stor_System.Models.ProductsDetail
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Edit : @ViewBag.Model_Name / @Model.ProDetailBarcode</h2>
+                    </div>
+                    <div class="col-3">
+                        <a href="~/ProductsDetailsN/index/@Model.ProductId" style="float: right;"><i class="fa fa-arrow-left"></i>&nbsp; Back</a>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/ProductsModels/index" class="card-description" style="color: #b66dff;"><code>Products</code> </a> /
+                    <a href="/ProductsDetailsN/index/@Model.ProductId" class="card-description" style="color: #b66dff;"><code>Quantity of  @ViewBag.Model_Name</code> </a> /
+                    <a href="/ProductsDetailsN/Edit/@Model.ProDetailId" class="card-description" style="color: #b66dff;"><code>Edit : @ViewBag.Model_Name/ @Model.ProDetailBarcode</code> </a>
+                </div>
+                @* ***************************************************************************************************************** *@
+                <hr />
+                <form asp-action="Edit" id="Form1">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ProDetailId" />
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">Barcode</label>
+                                <input asp-for="ProDetailBarcode" class="form-control" id="ProDetailBarcode_Input" />
+                                <span class="text-danger" id="ProDetailBarcode_Alert" style="display:none">* Barcode Is Required</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">Status</label>
+                                <select asp-for="SatutsId" class="form-control" asp-items="ViewBag.SatutsId" id="SatutsId_DropDownList"></select>
+                                <span class="text-danger" id="SatutsId_Alert" style="display:none">* Satuts Is Required</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">Inventory</label>
+                                <select asp-for="InventoryId" class="form-control" asp-items="ViewBag.InventoryId" id="InventoryId_DropDownList"></select>
+                                <span class="text-danger" id="InventoryId_Alert" style="display:none">* Satuts Is Required</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" style="display:none">
+                            <div class="form-group">
+                                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                                <span asp-validation-for="ProductId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                <textarea asp-for="ProDetailDescription"  class="form-control"></textarea>
+                                <span asp-validation-for="ProDetailDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4" style="display:none">
+                            <div class="form-group">
+                                <label asp-for="MovementId" class="control-label"></label>
+                                <input asp-for="MovementId" class="form-control" />
+                                <span asp-validation-for="MovementId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" style="display:none">
+                            <div class="form-group">
+                                <label asp-for="MovementLocation" class="control-label"></label>
+                                <input asp-for="MovementLocation" class="form-control" />
+                                <span asp-validation-for="MovementLocation" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" style="display:none">
+                            <div class="form-group">
+                                <label asp-for="Active" class="control-label"></label>
+                                <input asp-for="Active" class="form-control" />
+                                <span asp-validation-for="Active" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <input type="button" value="Save" class="btn btn-primary" onclick="Add_DEL()" />
+                            </div>
+                        </div>
+                    </div>
+            </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function Add_DEL() 
+    {
+        document.getElementById('ProDetailBarcode_Input').addEventListener('input', function () { ProDetailBarcode_Alert.style.display = 'none'; });
+
+        var ProDetailBarcode_Input = document.getElementById('ProDetailBarcode_Input').value; var ProDetailBarcode_Alert = document.getElementById('ProDetailBarcode_Alert');
+        var SatutsId_DropDownList = document.getElementById('SatutsId_DropDownList');
+        var SatutsId_DropDownListt_txt = SatutsId_DropDownList.options[SatutsId_DropDownList.selectedIndex].text;
+        var SatutsId_Alert = document.getElementById('SatutsId_Alert');
+        var InventoryId_DropDownList = document.getElementById('InventoryId_DropDownList');
+        var InventoryId_DropDownList_txt = InventoryId_DropDownList.options[InventoryId_DropDownList.selectedIndex].text;
+        var InventoryId_Alert = document.getElementById('InventoryId_Alert');
+
+        if (ProDetailBarcode_Input !== '' )  {document.forms["Form1"].submit(); }
+        else {if (ProDetailBarcode_Input === '') { ProDetailBarcode_Alert.style.display = 'block'; }}
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

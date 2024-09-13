@@ -1,0 +1,66 @@
+﻿@model Stor_System.Models.ProductsDetail
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ProductsDetail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label"></label>
+                <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryId" class="control-label"></label>
+                <select asp-for="InventoryId" class ="form-control" asp-items="ViewBag.InventoryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SatutsId" class="control-label"></label>
+                <select asp-for="SatutsId" class ="form-control" asp-items="ViewBag.SatutsId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MovementId" class="control-label"></label>
+                <input asp-for="MovementId" class="form-control" />
+                <span asp-validation-for="MovementId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MovementLocation" class="control-label"></label>
+                <input asp-for="MovementLocation" class="form-control" />
+                <span asp-validation-for="MovementLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProDetailBarcode" class="control-label"></label>
+                <input asp-for="ProDetailBarcode" class="form-control" />
+                <span asp-validation-for="ProDetailBarcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProDetailDescription" class="control-label"></label>
+                <input asp-for="ProDetailDescription" class="form-control" />
+                <span asp-validation-for="ProDetailDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Active" class="control-label"></label>
+                <input asp-for="Active" class="form-control" />
+                <span asp-validation-for="Active" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

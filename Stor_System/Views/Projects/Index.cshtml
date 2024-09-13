@@ -1,0 +1,410 @@
+﻿@model IEnumerable<Stor_System.Models.Project>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var role = Accessor.HttpContext.Session.GetString("Role");
+    string[] Request_Role_DTL = Accessor.HttpContext.Session.GetString("Request_Role_DTL").Split(",");
+}
+
+
+<style>
+    .popup {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        width: auto ;/* Match the width of the icon */
+        background-color: #f8f9fa; /* Bootstrap light background */
+        border: 1px solid #ccc;
+        padding: 5px;
+        z-index: 1000;
+        white-space: nowrap; /* Prevents the popup from wrapping */
+    }
+
+    .Edit_Popup {
+        display: none;
+        position: absolute;
+        right: 120px;
+        top: 100%;
+        width: auto; /* Match the width of the icon */
+        background-color: #f8f9fa; /* Bootstrap light background */
+        border: 1px solid #ccc;
+        padding: 5px;
+        z-index: 1000;
+        white-space: nowrap; /* Prevents the popup from wrapping */
+    }
+
+    .circle-container {
+        display: flex;
+        justify-content: space-between;
+        width: 150px; /* Adjust width as needed */
+        margin: 0 auto;
+    }
+
+    .circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-inline: auto;
+        border-style: solid;
+        border-width: thin;
+        cursor:pointer;
+    }
+
+    .unstyled-button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+        outline: none;
+    }
+
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Requests List</h2>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/Projects/index" class="card-description" style="color: #b66dff;"><code>Requests</code> </a>
+                </div>
+                <hr />
+
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Filter Buttons -->
+                        <div class="col-lg-10">
+                            <div style="display:inline-block; width: fit-content;margin-right: 25px;" onclick="filterRows('1')">
+                                <div class="circle" style="background-color:#09800029; cursor:pointer;"></div>
+                                <p>Approved</p>
+                            </div>
+                            <div style="display:inline-block; width: fit-content;margin-right: 25px;" onclick="filterRows('2')">
+                                <div class="circle" style="background-color:#ff000042; cursor:pointer;"></div>
+                                <p>Rejected</p>
+                            </div>
+                            @{
+                                if (Request_Role_DTL[5] == " DI")
+                                {
+                                    <div style="display:inline-block; width: fit-content;margin-right: 25px;" onclick="filterRows('0')">
+                                        <div class="circle" style="background-color:#f0f0f0; cursor:pointer;"></div>
+                                        <p>Pending</p>
+                                    </div>
+                                    <div style="display:inline-block; width: fit-content;" onclick="filterRows('all')">
+                                        <div class="circle" style="background-color:white; cursor:pointer;"></div>
+                                        <p>Show All</p>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                        @{
+                            if (Request_Role_DTL[5] == " DI")
+                            {
+                                <div class="col-lg-2">
+                                    <div style="display:inline-block; width: fit-content;margin-right: 25px;" onclick="filterRowsExIn('2')">
+                                        <div style="background-color:white; cursor:pointer;">
+                                            <p style="border-style: solid; padding: 5px; border-width: thin;  border-radius: 5px; font-weight: bold;">External</p>
+                                        </div>
+
+                                    </div>
+                                    <div style="display:inline-block; width: fit-content;" onclick="filterRowsExIn('1')">
+                                        <div style="background-color:white; cursor:pointer;">
+                                            <p style="border-style: solid; padding: 5px; border-width: thin;  border-radius: 5px; font-weight: bold;">Internal</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+
+
+
+                <div class="accordion" id="accordionPanelsStayOpenExample" style="--bs-accordion-border-color: 0;">
+                    @foreach (var item in Model)
+                    {
+                        string backgroundColor = item.ApproveStatus == "1" ? "#09800029" : item.ApproveStatus == "2" ? "#ff000042" : "#f0f0f0";
+                        <div class="accordion-item">
+                            <div class="row align-items-center mb-2 filter-row filter-rowExIn" data-status="@item.ApproveStatus" data-ExIn="@item.InternalExternal" style="width:100%; background-color:@backgroundColor; border-style: solid; border-width:thin; border-radius:5px;padding: 10px; margin-bottom: 15px;">
+                                <div class="col-lg-3">
+                                    <strong style="font-size: 23px;">@item.ProjectName</strong>
+                                    @if(item.InternalExternal=="1"){<p style="margin-bottom: 0;">Internal</p>}
+                                    else{<p style="margin-bottom: 0;">External</p>}
+                                    @if(item.NotifivationSeen=="1"){<p style="margin-bottom: 0;font-size: 10px;">Seen</p>}
+                                </div>
+                                <div class="col-lg-3">
+                                    <strong>From : </strong> @(item.StartDate?.ToString("dd/MM/yyyy") ?? "N/A")<br>
+                                    <strong>TO : </strong>  @(item.EndDate?.ToString("dd/MM/yyyy") ?? "N/A")
+                                </div>
+                                <div class="col-lg-3">
+                                    @if (item.ProjectStatus == "2")
+                                    {
+                                        <strong>On Progress</strong>
+                                    }
+                                    else if (item.ProjectStatus == "3")
+                                    {
+                                        <strong>Out Of Stor</strong>
+                                    }
+                                    else if (item.ProjectStatus == "4")
+                                    {
+                                        <strong>Finish</strong>
+                                    }
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="row" style="display: flex; align-items: center;">
+                                        <div style="flex: 0 0 auto; width: fit-content; margin-left: auto;">
+                                            <button class="accordion-button collapsed" style="padding: 0px; background: transparent;" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-@item.ProjectId" aria-expanded="false" aria-controls="panelsStayOpen-collapse-@item.ProjectId"></button>
+                                        </div>
+
+                                                
+                                        @{
+                                            if (Request_Role_DTL[2] == " E")
+                                            {
+                                                <div style="flex: 0 0 auto; width: fit-content; margin-left: 10px;">
+                                                    <img src="~/a_stor_system/assets/images/icons/Edit.png" onclick="showEdit_Popup(this)" style="width:20px; cursor:pointer; float: right;" />
+                                                    <div class="Edit_Popup" style="position: absolute; display: none;">
+                                                        <img src="~/a_stor_system/assets/images/icons/info.png" style="width:25px; height:25px; cursor:pointer" />
+                                                        <input type="button" onclick="window.location.href='/Projects/Edit/@item.ProjectId';" value="INFO" style="width: 70%;border-style: none;background-color: transparent;font-weight: bold;text-align: left;" />
+                                                        <hr>
+                                                        <img src="~/a_stor_system/assets/images/icons/pallet.png" style="width:25px; height:25px; cursor:pointer" />
+                                                        <input type="button" onclick="window.location.href='/Projects/EditPJEQ/@item.ProjectId';" value="Quantity" style="width: 70%;border-style: none;background-color: transparent;font-weight: bold;text-align: left;" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        
+
+                                        <div style="flex: 0 0 auto; width: fit-content; margin-left: 10px;">
+                                            <a asp-action="Details" asp-route-id="@item.ProjectId"><img src="~/a_stor_system/assets/images/icons/form.png" width="20" /></a>
+                                        </div>
+                                        @{
+                                            if (Request_Role_DTL[5] == " DI")
+                                            {
+                                                <div style="flex: 0 0 auto; width: fit-content; margin-left: 10px;">
+                                                    <img src="~/a_stor_system/assets/images/icons/like.png" onclick="showPopup(this)" style="width:20px;height:20px; cursor:pointer; float: right;" />
+                                                    <div class="popup" style="position: absolute; display: none;">
+                                                        <input type="button" onclick="window.location.href='/Projects/Accepted/@item.ProjectId';" class="btn btn-success" value="Accepted" style="width: 100%; margin-bottom: 5px;" /><br>
+                                                        <input type="button" onclick="window.location.href='/Projects/Rejected/@item.ProjectId';" class="btn btn-danger" value="Rejected" style="width: 100%; margin-bottom: 5px;" /><br>
+                                                        <img src="~/a_stor_system/assets/images/icons/delete.png" style="width:25px; height:25px; cursor:pointer" />
+                                                        <input type="button" value="Delete" style="width: 70%;" onclick="DeletePopup('@item.ProjectId' ,'@item.ProjectStatus' , '@item.ProjectName')" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        
+                                    </div>
+                                </div>
+
+                                        
+
+                                <div id="panelsStayOpen-collapse-@item.ProjectId" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-heading-@item.ProjectId">
+                                    <hr>
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-lg-6" style="padding-right: 10%;">
+                                                <strong style="font-size: 25px; text-decoration: underline;">Description :</strong>
+                                                <br>
+                                                @item.ProjectDescription
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <strong style="font-size: 25px; text-decoration: underline;">Equipment :</strong>
+                                                <br>
+                                                <div class="row" style="font-weight:bold;border-bottom-style:solid;">
+                                                    <div style="flex: 0 0 auto;  width: 40%;">Model</div>
+                                                    <div style="flex: 0 0 auto;  width: 40%;">Name</div>
+                                                    <div style="flex: 0 0 auto;  width: 10%;">Q</div>
+                                                </div>
+                                                @foreach (var productModelCount in item.ProductModelCounts)
+                                                {
+                                                    <div class="row" style="border-bottom-style:solid; border-width:thin">
+                                                        <div style="flex: 0 0 auto;  width: 40%;"> @productModelCount.Key.ModelName</div>
+                                                        <div style="flex: 0 0 auto;  width: 40%;">@productModelCount.Key.ProductName </div>
+                                                        <div style="flex: 0 0 auto;  width: 10%;"> @productModelCount.Value</div>
+                                                    </div>
+                                                }
+                                                       
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div id="popupDiv" style="display:none; border-style: solid; width: 40%; text-align: center;  position: fixed; top: 35%; margin: auto; left: 32%; background-color: ghostwhite;  border-radius: 7px;">
+                    <span class="close" style="color: #aaa; float: right; font-size: 28px;  font-weight: bold; cursor:pointer; padding: 5px">&times;</span>
+                    <p id="popupContent_ProjectId" style=" font-size: 30px;  font-weight: bold; color: white; margin-bottom: -8px; display:none"></p>
+                    <p id="popupContent_ProjectStatus" style=" font-size: 30px;  font-weight: bold; color: white; margin-bottom: -8px;"></p>
+                    <img src="~/a_stor_system/assets/images/icons/warning.png" width="120"/>
+                    <h3>Are You Sure you Want To Delete The Request</h3>
+                    <h1 id="popupContent_ProjectName"></h1>
+                    <div class="col-lg-12">
+                        <input type="button" class="btn btn-danger" value="Yes Delete" onclick="DE()" style="margin-bottom: 10px;" />
+                        <input type="hidden" id="decision" name="decision" /> <input type="hidden" id="ProjectId" name="ProjectId" />
+                        <br />
+                        <h4 style="color:red; display:none;" id="DeleteAlert">You Cannot Delete This Request !!!, You Must Finish It Before</h4>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the role value from Razor
+        var role = '@Request_Role_DTL[5]';
+
+        // If role is not '1', hide projects with ApproveStatus == 0
+        if (role != ' DI') {
+            var rows = document.querySelectorAll('.filter-row');
+            rows.forEach(function (row) {
+                var approveStatus = row.getAttribute('data-status');
+                if (approveStatus === '0') {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    });
+
+    // Other existing JavaScript functions like showPopup, filterRows, etc.
+
+</script>
+
+
+<script>
+    function showPopup(element) {
+        // Hide all other popups except the one clicked
+        var popups = document.querySelectorAll('.popup');
+        popups.forEach(function (popup) {
+            if (popup !== element.nextElementSibling) {
+                popup.style.display = 'none';
+            }
+        });
+
+        // Toggle the clicked popup
+        var popup = element.nextElementSibling;
+        popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+
+        // Close the popup if clicked outside
+        document.addEventListener('click', function (event) {
+            if (!element.contains(event.target) && !popup.contains(event.target)) {
+                popup.style.display = 'none';
+            }
+        }, { once: true });
+    }
+
+    function showEdit_Popup(element) {
+        // Hide all other popups except the one clicked
+        var Edit_Popups = document.querySelectorAll('.Edit_Popup');
+        Edit_Popups.forEach(function (Edit_Popup) {
+            if (Edit_Popup !== element.nextElementSibling) {
+                Edit_Popup.style.display = 'none';
+            }
+        });
+
+        // Toggle the clicked popup
+        var Edit_Popup = element.nextElementSibling;
+        Edit_Popup.style.display = (Edit_Popup.style.display === 'block') ? 'none' : 'block';
+
+        // Close the popup if clicked outside
+        document.addEventListener('click', function (event) {
+            if (!element.contains(event.target) && !Edit_Popup.contains(event.target)) {
+                Edit_Popup.style.display = 'none';
+            }
+        }, { once: true });
+    }
+
+    function filterRows(status) {
+        // Get all the rows
+        var rows = document.querySelectorAll('.filter-row');
+
+        rows.forEach(function (row) {
+            if (status === 'all') {
+                // Show all rows if 'Show All' is clicked
+                row.style.display = '';
+            } else if (row.getAttribute('data-status') === status) {
+                // Show rows with the matching status
+                row.style.display = '';
+            } else {
+                // Hide rows that don't match the status
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function filterRowsExIn(ExIn) {
+        // Get all the rows
+        var rows = document.querySelectorAll('.filter-rowExIn');
+
+        rows.forEach(function (row) {
+            if (row.getAttribute('data-ExIn') === ExIn) {
+                // Show rows with the matching status
+                row.style.display = '';
+            } else {
+                // Hide rows that don't match the status
+                row.style.display = 'none';
+            }
+        });
+    }
+
+
+
+    var popup = document.getElementById("popupDiv");
+    var span = document.getElementsByClassName("close")[0];
+
+    function DeletePopup(projectid, projectstatus, projectname) {
+        document.getElementById("popupContent_ProjectId").innerText = projectid;
+        document.getElementById("popupContent_ProjectStatus").innerText = projectstatus;
+        document.getElementById("ProjectId").value = projectid;
+        document.getElementById("popupContent_ProjectName").innerText = projectname;
+        popup.style.display = "block";
+    }
+    span.onclick = function () {
+        popup.style.display = "none";
+    }
+    window.onclick = function (event) {
+        if (event.target == popup) {
+            popup.style.display = "none";
+        }
+    }
+
+    function DE() 
+    {
+        var ProjectId = document.getElementById("popupContent_ProjectId").innerText;
+        var ProjectStatus = document.getElementById("popupContent_ProjectStatus").innerText;
+        var DeleteAlert = document.getElementById("DeleteAlert")
+
+
+        if (ProjectStatus === '1' || ProjectStatus === '4') {
+            document.getElementById('decision').value = ProjectId;
+            window.location.href = '/Projects/ComfirmDelete/' + ProjectId;
+        }
+        else
+        {
+            DeleteAlert.style.display = 'block';
+        }
+        
+        
+    }
+</script>

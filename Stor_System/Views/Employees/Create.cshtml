@@ -1,0 +1,236 @@
+﻿@model Stor_System.Models.Employee
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Add New Employee</h2>
+                    </div>
+                    <div class="col-3">
+                        <a href="~/Employees/index" style="float: right;"><i class="fa fa-arrow-left"></i>&nbsp; Back</a>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/Employees/index" class="card-description" style="color: #b66dff;"><code>Employees</code> </a> /
+                    <a href="/Employees/Create" class="card-description" style="color: #b66dff;"><code>Add</code> </a>
+                </div>
+
+                @* ***************************************************************************************************************** *@
+                <form asp-action="Create" method="post" enctype="multipart/form-data" id="Form1">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">Employee Name</label>
+                                <input asp-for="EmployeeName" class="form-control" id="EmployeeName_Input" />
+                                <span class="text-danger" id="EmployeeName_Alert" style="display:none">* Employee Name IS Required</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">Nationality</label>
+                                @Html.DropDownList("NationalityId", null, "...... Select Nationality ......", htmlAttributes: new { @class = "form-control", id = "NationalityId"})
+                                <input type="hidden" name="Nat_Id" />
+                                <span class="text-danger" id="NationalityId_Alert" style="display:none">* Nationality IS Required</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">Department</label>
+                                @Html.DropDownList("DepartmentId", null, "...... Select Department ......", htmlAttributes: new { @class = "form-control", id = "DepartmentId"})
+                                <input type="hidden" name="Dep_Id" />
+                                <span class="text-danger" id="DepartmentId_Alert" style="display:none">* Department IS Required</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="Qid" class="control-label"></label>
+                                <input asp-for="Qid" class="form-control" />
+                                <span asp-validation-for="Qid" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="Phone" class="control-label"></label>
+                                <input asp-for="Phone" class="form-control" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" type="email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Birthday</label>
+                                <input asp-for="BirthDay" type="date" class="form-control" id="BirthDay_Input" />
+                                <span class="text-danger" id="BirthDay_Alert" style="display:none">* BirthDaye IS Required</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Image</label>
+                                <input asp-for="ImagePath" type="file" id="imageUpload" class="form-control" />
+                                <span asp-validation-for="ImagePath" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div id="imageContainer">
+                                <div style="display: inline-block;width: 45%;">
+                                    <img id="imagePreview" src="~/A_Stor_System/assets/images/Icons/EmptyUsers.png" alt="Image Preview" style="border-color: #ced4da;background-color: #a3a3a3cc; display: inline-block; width: 100%; border-style: solid;  border-radius: 5px;" />
+                                </div>
+                                <div style="display: inline-block;">
+                                    <input id="deleteButton" type="button" value="X" style="display:none;border-radius: 8px; background-color: #ff7676; color: white; font-weight: bold;border-color: white;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                        <div class="form-group">
+                            <input type="button" value="Create" class="btn btn-primary" onclick="Add_Employee()" />
+                        </div>
+                    </div>
+                </form>
+
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+    //*************************** Add Products  Display Image When Upload it and Delete it *********************************************
+
+    document.getElementById('imageUpload').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = document.getElementById('imagePreview');
+                img.src = e.target.result;
+                document.getElementById('imageContainer').style.display = 'block';
+                document.getElementById('deleteButton').style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            alert('Please select a valid image file.');
+        }
+    });
+
+    document.getElementById('deleteButton').addEventListener('click', function () {
+
+        const imageUpload = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        const imageContainer = document.getElementById('imageContainer');
+        const deleteButton = document.getElementById('deleteButton');
+
+        imageUpload.value = ''; // Reset the file input
+        imagePreview.src = '/A_Stor_System/assets/images/Icons/EmptyUsers.png'; // Clear the image source
+        deleteButton.style.display = 'none'
+    });
+
+    //*************************** Add Products  Put The DropDow List Values in Input Text *********************************************
+
+    $(function () { $('#NationalityId').on('change', function () { $('input[name=Nat_Id]').val($(this).val()); }); });
+    $(function () { $('#DepartmentId').on('change', function () { $('input[name=Dep_Id]').val($(this).val()); }); });
+
+    //******************************************* Mendetary Method *********************************************************************
+
+
+
+    document.getElementById('EmployeeName_Input').addEventListener('input', function () { EmployeeName_Alert.style.display = 'none'; });
+    document.getElementById('BirthDay_Input').addEventListener('input', function () { BirthDay_Alert.style.display = 'none'; });
+    $(document).ready(function () { $('#NationalityId').change(function () { var selectedValue = $(this).val(); if (selectedValue !== "") { NationalityId_Alert.style.display = 'none'; } }); });
+    $(document).ready(function () { $('#DepartmentId').change(function () { var selectedValue = $(this).val(); if (selectedValue !== "") { DepartmentId_Alert.style.display = 'none'; } }); });
+
+
+    function Add_Employee() {
+        var EmployeeName_Input = document.getElementById('EmployeeName_Input').value; var EmployeeName_Alert = document.getElementById('EmployeeName_Alert');
+        var BirthDay_Input = document.getElementById('BirthDay_Input').value; var BirthDay_Alert = document.getElementById('BirthDay_Alert');
+
+        var NationalityId_DropDownList = document.getElementById('NationalityId');
+        var NationalityId_DropDownList_txt = NationalityId_DropDownList.options[NationalityId_DropDownList.selectedIndex].text;
+        var NationalityId_Alert = document.getElementById('NationalityId_Alert');
+
+        var DepartmentId_DropDownList = document.getElementById('DepartmentId');
+        var DepartmentId_DropDownList_txt = DepartmentId_DropDownList.options[DepartmentId_DropDownList.selectedIndex].text;
+        var DepartmentId_Alert = document.getElementById('DepartmentId_Alert');
+
+        if (EmployeeName_Input !== '' && BirthDay_Input !== '' && NationalityId_DropDownList_txt !== '...... Select Nationality ......' && DepartmentId_DropDownList_txt !== '...... Select Department ......') {
+            document.forms["Form1"].submit();
+        }
+        else {
+            if (EmployeeName_Input === '') { EmployeeName_Alert.style.display = 'block'; }
+            if (BirthDay_Input === '') { BirthDay_Alert.style.display = 'block'; }
+            if (NationalityId_DropDownList_txt === '...... Select Nationality ......') { NationalityId_Alert.style.display = 'block'; }
+            if (DepartmentId_DropDownList_txt === '...... Select Department ......') { DepartmentId_Alert.style.display = 'block'; }
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,362 @@
+﻿ @model Stor_System.Models.Project
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    .basket {
+        position: fixed;
+        bottom: 10%;
+        right: 2%;
+        width: fit-content;
+        text-align: center;
+        z-index: 1000;
+        background-color: #f2edf3;
+    }
+
+    .pdf-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="pdf-container">
+    <div class="pdf-content">
+       
+        <h3 style="font-size:30px; text-align:center; font-weight: bold; margin-top: 40px; margin-bottom: 40px;">
+            Delivery Note
+        </h3>
+        <table>
+
+            <tr>
+                <th style="width: 50%;">Requester</th>
+                <th style="width: 50%;">Delivered by </th>
+            </tr>
+            <tr>
+                <td>@Model.EmployeeRequester.EmployeeName</td>
+                <td>
+                    @if (Model.EmployeeRequesterId != Model.EmployeeDeliverId)
+                    {
+                        @Model.EmployeeDeliver.EmployeeName
+                    }
+                    
+                </td>
+            </tr>
+        </table>
+        <br />
+        <h6 style="font-weight: bold;">Date And Loaction</h6>
+        <table>
+            <tr>
+                <th style="width: 50%;">Project Name</th>
+                <td>@Model.ProjectName</td>
+            </tr>
+            <tr>
+                <th style="width: 50%;">From</th>
+                <td>@(Model.StartDate?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+            </tr>
+            <tr>
+                <th style="width: 50%;">To</th>
+                <td>@(Model.EndDate?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+            </tr>
+            <tr>
+                <th style="width: 50%;">Loaction</th>
+                <td>@Model.ProjectLocation</td>
+            </tr>
+        </table>
+        <br />
+        <h6 style="font-weight: bold;">Equipment</h6>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Name</th>
+                    <th>QTY</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var productModelCount in Model.ProductModelCounts)
+                {
+                    <tr>
+                        <td>@productModelCount.Key.ModelName</td>
+                        <td>@productModelCount.Key.ProductName</td>
+                        <td>@productModelCount.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+        <h6 style="font-weight: bold;">Description</h6>
+        <table>
+            <tr>
+                <td style="width: 50%;">@Model.ProjectDescription</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="download-pdf" class="basket">
+    <div class="container">
+        <div class="row pt-3">
+            <div class="col-lg-12">
+                <img src="~/a_stor_system/assets/images/icons/pdf.png" width="50" id="download-pdf" style="border-style: solid; border-color: #cc4b4c;  padding: 6px; border-radius: 31px; cursor: pointer;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script src="~/js/exporttopdf.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    .basket {
+        position: fixed;
+        bottom: 10%;
+        right: 2%;
+        width: fit-content;
+        text-align: center;
+        z-index: 1000;
+        background-color: #f2edf3;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+
+<div id="content-to-print" style="width: 80%; margin-inline: auto; background-color: white;padding: 2%;">
+
+    <div class="row">
+        <div style="flex: 0 0 auto;  width: 50%;">
+            <strong>Taswer Media Production</strong><br />
+            <p style="margin-bottom:0px;">P.O Box 24690</p>
+            <p style="margin-bottom:0px;">2nd Floor, Bldg. 47 Al malji Building</p>
+            <p style="margin-bottom:0px;">Jawan Street, Al Sadd Doha Qatar</p>
+            <p>Bank Account No. : 0260-101656-001</p>
+        </div>
+        <div style="flex: 0 0 auto;  width: 50%;">
+            <img src="~/a_stor_system/assets/images/logos/MainLogoWide.jpg" style="width: 300px;float: right;" />
+        </div>
+    </div>
+    
+    <hr>
+
+
+    <h3 style="font-size:30px; text-align:center; font-weight: bold; margin-top: 40px; margin-bottom: 40px;">
+        @Model.ProjectName
+    </h3>
+    <table>
+        
+        <tr>
+            <th style="width: 50%;">Requester</th>
+            <th style="width: 50%;">Delivered by </th>
+        </tr>
+        <tr>
+            <td>@Model.EmployeeRequester.EmployeeName</td>
+            <td>@Model.EmployeeDeliver.EmployeeName</td>
+        </tr>
+    </table>
+    <br />
+    <h6 style="font-weight: bold;">Date And Loaction</h6>
+    <table>
+        <tr>
+            <th style="width: 50%;">From</th>
+            <td>@(Model.StartDate?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+        </tr>
+        <tr>
+            <th style="width: 50%;">To</th>
+            <td>@(Model.EndDate?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+        </tr>
+        <tr>
+            <th style="width: 50%;">Loaction</th>
+            <td>@Model.ProjectLocation</td>
+        </tr>
+    </table>
+    <br />
+    <h6 style="font-weight: bold;">Equipment</h6>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Name</th>
+                <th>Q</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var productModelCount in Model.ProductModelCounts)
+            {
+                <tr>
+                    <td>@productModelCount.Key.ModelName</td>
+                    <td>@productModelCount.Key.ProductName</td>
+                    <td>@productModelCount.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <h6 style="font-weight: bold;">Description</h6>
+    <table>
+        <tr>
+            <td style="width: 50%;">@Model.ProjectDescription</td>
+        </tr>
+    </table>
+    
+    <div class="row" style="border-top-style:solid; border-color:#c73939; margin-top: 70px;padding-top: 15px;">
+
+        <div style="flex: 0 0 auto;  width: 50%;">
+            <i class="fa fa-map-marker" style="color:#c73939"></i>
+            <span class="menu-title">2nd Floor, Bldg. 47 Al malji Buildin</span><br />
+            <span class="menu-title">Jawan Street, Al Sadd Doha Qatar</span>
+            <br />
+            <i class="fa fa-envelope" style="color:#c73939"></i>
+            <span class="menu-title">P.O Box 24690</span>
+        </div>
+        <div style="flex: 0 0 auto;  width: 50%;">
+            <i class="fa fa-phone" style="color:#c73939"></i>
+            <span class="menu-title">+97450933665  -  +97444140714</span>
+            <br />
+            <i class="fa fa-globe" style="color:#c73939"></i>
+            <span class="menu-title">WWW.taswer.live</span>
+        </div>
+    </div>
+
+
+
+</div>
+
+<button id="download-pdf" class="basket">Download PDF</button>
+
+<div id="logProductIds" class="basket">
+    <div class="container">
+        <div class="row pt-3">
+            <div class="col-lg-12">
+                <img src="~/a_stor_system/assets/images/icons/pdf.png" width="50" id="download-pdf" style="border-style: solid; border-color: #cc4b4c;  padding: 6px; border-radius: 31px; cursor: pointer;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("download-pdf").addEventListener("click", function () {
+        var element = document.getElementById('content-to-print');
+
+        html2pdf()
+            .from(element)
+            .set({
+                
+                filename: 'document.pdf',
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait' }
+            })
+            .save();
+    });
+</script>
+
+ *@

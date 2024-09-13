@@ -1,0 +1,84 @@
+﻿@model Stor_System.Models.Satut
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 style="font-size: 2.188rem;">Edit Satuts: @Model.SatutsName</h2>
+                    </div>
+                    <div class="col-3">
+                        <a href="~/Satuts/index" style="float: right;"><i class="fa fa-arrow-left"></i>&nbsp; Back</a>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <a href="/Home/index" class="card-description" style="color: #b66dff;"><code>Dashboard</code> </a> /
+                    <a href="/Satuts/index" class="card-description" style="color: #b66dff;"><code>Brands</code> </a> /
+                    <a href="/Satuts/Edit/@Model.SatutsId" class="card-description" style="color: #b66dff;"><code>Edit Satuts: @Model.SatutsName</code> </a>
+                </div>
+
+
+
+                <div class="col-md-12">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="SatutsId" />
+
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label">SatutsName</label>
+                                    <input asp-for="SatutsName" class="form-control" />
+                                    <span asp-validation-for="SatutsName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label">Color</label>
+                                    <input asp-for="Color" class="form-control" />
+                                    <span asp-validation-for="Color" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label">Brand Name</label>
+                                    <select asp-for="Usability" class="form-control">
+                                        <option value="1">Usable</option>
+                                        <option value="2">Not Usable</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
